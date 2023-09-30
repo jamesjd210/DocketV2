@@ -34,7 +34,6 @@ export default function Page() {
           ...prevData,
           [name]: value,
         }));    
-        console.log(formData);   
     };
     
     //Track when user submits 
@@ -55,7 +54,6 @@ export default function Page() {
             httpMethod : getHttpMethod(),
             headers : getHeaders(),
         }));
-        console.log(CurrentApiRequest);
     }
 
     function getHttpMethod() : HttpMethod {
@@ -103,14 +101,13 @@ export default function Page() {
                 }
             }
         }
-        console.log(result);
         return result;
     }
     
     return (
     <main className="flex min-h-screen text-white flex-col items-center justify-center">
         {isSubmitted ? (
-            <ApiSandbox></ApiSandbox>
+            <ApiSandbox apiRequest = {CurrentApiRequest} />
         ) : (
         <form method="post" onSubmit={handleSubmit} className = "text-center">
             <div className="mb-4">
