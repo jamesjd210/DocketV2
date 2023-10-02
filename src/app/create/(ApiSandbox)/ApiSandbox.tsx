@@ -6,15 +6,16 @@ interface ApiSandboxProps {
     apiRequest : ApiRequest;
 }
 export default function ApiSandbox( props : ApiSandboxProps) {
-    const [values, setValues] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(props.apiRequest.headers).map((key) => [key, ''])));
+    const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(props.apiRequest.headers).map((key) => [key, ''])));
     const [apiResponse, setApiResponse] = useState<string | null>(null); // Store the API response
- 
+    const [buttonClicked, setButtonClicked] = useState<boolean>(false);
+
     async function handleButtonClick() {
         try {
             // Make an API call
             const response = await fetch(props.apiRequest.url, {
                 method : props.apiRequest.httpMethod, 
-                headers : props.apiRequest.headers,
+                headers : newHeaders,
             });
             if (!response.ok) {
               throw new Error('Network response was not ok');
@@ -24,13 +25,15 @@ export default function ApiSandbox( props : ApiSandboxProps) {
           } catch (error) {
             console.error('Error making API call:', error);
           }
+          setButtonClicked(true);
     }
 
-    function handleChange(headerName : string, newValue : string) {
-        setValues((previousValues) => ({
-            ...previousValues,
-            [headerName] : newValue,
+    function handleChange(headerName : string, newHeader : string) {
+        setNewHeaders((previousHeader) => ({
+            ...previousHeader,
+            [headerName] : newHeader,
         }));
+        setButtonClicked(false);
     };
 
     var dynamicPlaceholder;
@@ -43,7 +46,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
                 <input
                 type="text"
                 placeholder={dynamicPlaceholder}
-                value={values[headerValue]}
+                value={newHeaders[headerValue]}
                 onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerValue, event.target.value)}
                 className="text-black w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
@@ -52,7 +55,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     });
     
     return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-40">
         {/* Input boxes */}
         {inputBoxes}
         {/* Execute button */}
@@ -71,8 +74,10 @@ export default function ApiSandbox( props : ApiSandboxProps) {
                 <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponse, null, 4)}</pre>
                 <CodeProvider apiRequest = { props.apiRequest }/>
             </div>
+            ) : !apiResponse && buttonClicked ? (
+                <p>Error Making Api Call</p>
             ) : (
-                <p>Waiting...</p>
+                <p>Waiting</p>
             )}
         </div>
     </div>
