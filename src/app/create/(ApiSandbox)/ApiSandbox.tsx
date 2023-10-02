@@ -1,5 +1,6 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { ApiRequest } from '@/models/ApiRequest.model';
+import CodeProvider from './Code-Provider';
 
 interface ApiSandboxProps {
     apiRequest : ApiRequest;
@@ -54,7 +55,6 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     <div className="flex flex-col items-center">
         {/* Input boxes */}
         {inputBoxes}
-    
         {/* Execute button */}
         <button
           type="button"
@@ -63,12 +63,13 @@ export default function ApiSandbox( props : ApiSandboxProps) {
         >
           Execute
         </button>
-    
+        
         {/* API response */}
         <div className="mt-4">
             {apiResponse ? (
             <div className="">
                 <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponse, null, 4)}</pre>
+                <CodeProvider apiRequest = { props.apiRequest }/>
             </div>
             ) : (
                 <p>Waiting...</p>
