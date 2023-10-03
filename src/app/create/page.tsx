@@ -4,23 +4,27 @@ import { ApiForm } from '@/models/ApiForm.model'
 import { ApiRequest } from '@/models/ApiRequest.model';
 import { HttpMethod } from '@/models/HttpMethod.model';
 import ApiSandbox from '@/create/(ApiSandbox)/ApiSandbox';
+import DocGenerator from './(CreateDocs)/DocGenerator';
 
 export default function Page() {
     //Tracking the state of the form data from user
     const [formData, setFormData] = useState<ApiForm>({
-        textInput: '',
-        apiInput: '',
+        textInput : '',
+        companyName : '',
+        developerName : '',
+        developerEmail : '',
+        apiInput : '',
+        apiName : '',
+        apiOneLiner : '',
+        additionalInfo : '',
     });
-    //Tracking if the form was submitted
-    const [isSubmitted, setIsSubmitted] = useState(false);
 
+    //Tracking if the form was submitted
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [CurrentApiRequest, setApiRequest] = useState<ApiRequest> (
         {
             // Initialize with default values for ApiRequest properties
-            apiForm: {
-                textInput: '',
-                apiInput: '',
-            },
+            apiForm: formData,
             httpMethod: HttpMethod.GET,
             url: '',
             headers: {},
@@ -41,11 +45,6 @@ export default function Page() {
         //Prevent browser from reloading page
         event.preventDefault();
 
-        //Read form data
-        // const form = event.target as HTMLFormElement;
-        // const newFormData = new FormData(form);
-
-        // const formJson = Object.fromEntries(newFormData.entries());
         setIsSubmitted(true);
         setApiRequest((previousApiRequest) => ({
             ...previousApiRequest,
@@ -54,6 +53,7 @@ export default function Page() {
             httpMethod : getHttpMethod(),
             headers : getHeaders(),
         }));
+        console.log(formData)
     }
 
     function getHttpMethod() : HttpMethod {
@@ -103,47 +103,56 @@ export default function Page() {
         }
         return result;
     }
+
+    function generateTitleLabels(input : string) : string {
+          // Use a regular expression to split the string by uppercase letters
+        const words = input.split(/(?=[A-Z])/);
+  
+        // Capitalize the first letter of each word and join them with spaces
+        const titleCase = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        
+        return titleCase + ":";
+    }
+
+    const formFields = Object.keys(formData).map((fieldKey : string, index : number) => {
+        return (
+            <>                
+                <div key={index} className = "flex mb-4">
+                    <label className="block text-sm font-bold mb-2 w-full mr-5">
+                        { generateTitleLabels(fieldKey) }
+                    </label>
+                    <input
+                    type="text"
+                    name={fieldKey}
+                    placeholder=""
+                    onChange={handleInputChange}
+                    className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    />
+                </div>
+            </>
+        );
+    });
+
     
     return (
-    <main className="flex min-h-screen text-white flex-col items-center justify-center">
+    <>
         {isSubmitted ? (
-            <ApiSandbox apiRequest = {CurrentApiRequest} />
+            <div className="flex flex-col mx-auto items-center">
+                <ApiSandbox apiRequest = { CurrentApiRequest } />
+                <DocGenerator apiForm = { formData } apiRequest={ CurrentApiRequest }/>
+            </div>
         ) : (
-        <form method="post" onSubmit={handleSubmit} className = "text-center">
-            <div className="mb-4">
-            <label className="block text-sm font-bold mb-2">
-                Input your Text:
-            </label>
-            <input
-                name="textInput"
-                className="border rounded-lg px-3 py-2 w-64"
-                style={{ color: 'black' }}
-                value={formData.textInput}
-                onChange={handleInputChange}
-            />
-            </div>
-
-            <div className="mb-4">
-            <label className="block text-sm font-bold mb-2">
-                Input your API Calls:
-            </label>
-            <textarea
-                name="apiInput"
-                className="border rounded-lg px-3 py-2 w-64 h-20 align-top"
-                style={{ color: 'black' }}
-                value={formData.apiInput}
-                onChange={handleInputChange}
-            ></textarea>
-            </div>
-
+        <div className="flex flex-wrap max-w-lg mx-auto mt-20">
+            <form id="user-form" method="post" onSubmit={handleSubmit} className = ""> { formFields } </form>
             <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer"
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer mx-auto mt-10"
+            form="user-form"
             >
             Create Sandbox
             </button>
-        </form>
+        </div>
         )}
-    </main>
+    </>
     );
 }

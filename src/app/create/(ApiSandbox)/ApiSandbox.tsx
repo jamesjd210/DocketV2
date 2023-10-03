@@ -39,15 +39,14 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     var dynamicPlaceholder;
 
     //Generate number of input boxes equal to headers
-    const inputBoxes = Object.keys(props.apiRequest.headers).map((headerValue : string, index : number) => {
-        dynamicPlaceholder = "Example is " + props.apiRequest.headers[headerValue]
+    const inputBoxes = Object.keys(props.apiRequest.headers).map((headerKey : string, index : number) => {
+        dynamicPlaceholder = "Example is " + props.apiRequest.headers[headerKey]
         return (
             <div key={index} className = "flex mb-4">
                 <input
                 type="text"
                 placeholder={dynamicPlaceholder}
-                value={newHeaders[headerValue]}
-                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerValue, event.target.value)}
+                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerKey, event.target.value)}
                 className="text-black w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
             </div>
