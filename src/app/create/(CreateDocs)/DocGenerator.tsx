@@ -2,15 +2,15 @@ import React, { useState, SyntheticEvent } from 'react';
 import { ApiForm } from '@/models/ApiForm.model'
 import { ApiRequest } from '@/models/ApiRequest.model';
 import  DownloadDoc  from '@/create/(CreateDocs)/DownloadDoc'
+import { DocketObject } from '@/models/DocketObject.model';
 
 interface DocGeneratorProps {
-    apiForm : ApiForm;
-    apiRequest : ApiRequest;
+    docketObject : DocketObject;
 }
 
 export default function DocGenerator(props : DocGeneratorProps) {
-    const currentApiForm = props.apiForm;
-    const currentApiRequest = props.apiRequest;
+    const currentApiForm = props.docketObject.currApiForm;
+    const currentApiRequest = props.docketObject.currApiRequest;
     
     function generateGeneralInfo() : string {
         const generalInfo = 
@@ -52,7 +52,7 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
         var codeStringBuilder = 
 `
 ## Calling the API:
-\`\`\`>${currentApiRequest.apiForm.apiInput}\`\`\`\n\n
+\`\`\`>${currentApiForm.apiInput}\`\`\`\n\n
 <details><summary>Python</summary><br><pre><code>{python_script}</code></pre></details>
 <details><summary>TypeScript</summary><br><pre><code>{type_script}</code></pre></details>
 <details><summary>C#</summary><br><pre><code>{cSharp_script}</code></pre></details>\n

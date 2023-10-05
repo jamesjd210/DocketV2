@@ -1,10 +1,11 @@
 'use client'
-import React, { useState, SyntheticEvent } from 'react';
+import React, { useState, SyntheticEvent, useEffect } from 'react';
 import { ApiForm } from '@/models/ApiForm.model'
 import { ApiRequest } from '@/models/ApiRequest.model';
 import { HttpMethod } from '@/models/HttpMethod.model';
 import ApiSandbox from '@/create/(ApiSandbox)/ApiSandbox';
 import DocGenerator from './(CreateDocs)/DocGenerator';
+import { DocketObject } from '@/models/DocketObject.model';
 
 export default function Page() {
     //Tracking the state of the form data from user
@@ -18,26 +19,33 @@ export default function Page() {
         apiOneLiner : '',
         additionalInfo : '',
     });
-
-    //Tracking if the form was submitted
-    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-    const [CurrentApiRequest, setApiRequest] = useState<ApiRequest> (
-        {
+    //Tracking the current api request that is used for execution
+    const [CurrentApiRequest, setApiRequest] = useState<ApiRequest> ({
             // Initialize with default values for ApiRequest properties
-            apiForm: formData,
             httpMethod: HttpMethod.GET,
             url: '',
             headers: {},
             body: {},
         }
     );
+
+    //All data needed for docket functionality default values
+    const [currDocketObject, setDocketObject] = useState<DocketObject> ({
+        currApiForm : formData,
+        currApiRequest : CurrentApiRequest,
+        codeTranslations : null,
+    });
+
+    //Tracking if the form was submitted
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
     //Automatically store the changes to the input boxes
     function handleInputChange(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.currentTarget;
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
-        }));    
+        }));  
     };
     
     //Track when user submits 
@@ -46,15 +54,20 @@ export default function Page() {
         event.preventDefault();
 
         setIsSubmitted(true);
-        setApiRequest((previousApiRequest) => ({
-            ...previousApiRequest,
-            apiForm : formData,
+        setApiRequest({
             url : getUrl(),
             httpMethod : getHttpMethod(),
             headers : getHeaders(),
-        }));
-        console.log(formData)
+            body : {},
+        });
     }
+
+    useEffect(() => {
+        setDocketObject({
+            currApiForm : formData,
+            currApiRequest : CurrentApiRequest,
+        } as DocketObject);
+    }, [CurrentApiRequest]);
 
     function getHttpMethod() : HttpMethod {
         const httpMethodRegex : RegExp = /curl -X (\w+)/;
@@ -138,8 +151,8 @@ export default function Page() {
     <>
         {isSubmitted ? (
             <div className="flex flex-col mx-auto items-center">
-                <ApiSandbox apiRequest = { CurrentApiRequest } />
-                <DocGenerator apiForm = { formData } apiRequest={ CurrentApiRequest }/>
+                <ApiSandbox docketObject = { currDocketObject } />
+                <DocGenerator docketObject = { currDocketObject }/>
             </div>
         ) : (
         <div className="flex flex-wrap max-w-lg mx-auto mt-20">

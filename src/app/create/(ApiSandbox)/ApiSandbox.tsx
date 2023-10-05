@@ -1,20 +1,24 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { ApiRequest } from '@/models/ApiRequest.model';
 import CodeProvider from './Code-Provider';
+import { DocketObject } from '@/models/DocketObject.model';
 
 interface ApiSandboxProps {
-    apiRequest : ApiRequest;
+    docketObject : DocketObject;
 }
 export default function ApiSandbox( props : ApiSandboxProps) {
-    const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(props.apiRequest.headers).map((key) => [key, ''])));
+
+    const currRequest = props.docketObject.currApiRequest;
+
+    const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.headers).map((key) => [key, ''])));
     const [apiResponse, setApiResponse] = useState<string | null>(null); // Store the API response
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
     async function handleButtonClick() {
         try {
             // Make an API call
-            const response = await fetch(props.apiRequest.url, {
-                method : props.apiRequest.httpMethod, 
+            const response = await fetch(currRequest.url, {
+                method : currRequest.httpMethod, 
                 headers : newHeaders,
             });
             if (!response.ok) {
@@ -26,6 +30,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
             console.error('Error making API call:', error);
           }
           setButtonClicked(true);
+          console.log(props.docketObject);
     }
 
     function handleChange(headerName : string, newHeader : string) {
@@ -39,8 +44,8 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     var dynamicPlaceholder;
 
     //Generate number of input boxes equal to headers
-    const inputBoxes = Object.keys(props.apiRequest.headers).map((headerKey : string, index : number) => {
-        dynamicPlaceholder = "Example is " + props.apiRequest.headers[headerKey]
+    const inputBoxes = Object.keys(currRequest.headers).map((headerKey : string, index : number) => {
+        dynamicPlaceholder = "Example is " + currRequest.headers[headerKey]
         return (
             <div key={index} className = "flex mb-4">
                 <input
@@ -71,7 +76,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
             {apiResponse ? (
             <div className="">
                 <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponse, null, 4)}</pre>
-                <CodeProvider apiRequest = { props.apiRequest }/>
+                <CodeProvider apiRequest = { currRequest }/>
             </div>
             ) : !apiResponse && buttonClicked ? (
                 <p>Error Making Api Call</p>
