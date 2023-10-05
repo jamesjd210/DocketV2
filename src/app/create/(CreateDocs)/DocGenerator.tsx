@@ -29,8 +29,19 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
         return generalInfo
     }
 
-    function generateHeaders() {
+    function generateHeadersSpec() {
+        var specBuilder = ``;
+        Object.keys(currentApiRequest.headers).forEach(key  => {
+            specBuilder += `>\`\`\`${key}\`\`\`: `;
+            specBuilder += `Input Example : ${currentApiRequest.headers[key]} \n\n`;
+        });
+        var headerSpec = 
+`
+## Attributes:
 
+`
+        headerSpec += specBuilder;
+        return headerSpec;
     }
 
     function generateDataBox() {
@@ -38,12 +49,22 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
     }
 
     function generateCode() {
-
+        var codeStringBuilder = 
+`
+## Calling the API:
+\`\`\`>${currentApiRequest.apiForm.apiInput}\`\`\`\n\n
+<details><summary>Python</summary><br><pre><code>{python_script}</code></pre></details>
+<details><summary>TypeScript</summary><br><pre><code>{type_script}</code></pre></details>
+<details><summary>C#</summary><br><pre><code>{cSharp_script}</code></pre></details>\n
+## Output:
+\`\`\`TODO\`\`\`
+`
+        return codeStringBuilder;
     }
 
     return (
         <>
-        <DownloadDoc documentContent = {generateGeneralInfo()}/>
+        <DownloadDoc documentContent = {generateGeneralInfo() + generateHeadersSpec() + generateCode()}/>
         </>
     );
 };
