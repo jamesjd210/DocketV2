@@ -33,11 +33,18 @@ export default function ApiSandbox( props : ApiSandboxProps) {
           setButtonClicked(true);
     }
 
-    function handleChange(inputKey : string, newInput : string) {
-        setNewHeaders((previousValues) => ({
-            ...previousValues,
-            [inputKey] : newInput,
-        }));
+    function handleChange(inputKey : string, newValue : string, flag : number) {
+        if(flag === 0) {
+            setNewHeaders((previousHeaders) => ({
+                ...previousHeaders,
+                [inputKey] : newValue,
+            }));
+        } else if(flag === 1) {
+            setNewData((previousData) => ({
+                ...previousData,
+                [inputKey] : newValue,
+            }));
+        }
         setButtonClicked(false);
     };
 
@@ -66,7 +73,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
                 <input
                 type="text"
                 placeholder={dynamicPlaceholder}
-                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerKey, event.target.value)}
+                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerKey, event.target.value, 0)}
                 className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
             </div>
@@ -83,7 +90,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
                 <input
                 type="text"
                 placeholder={dynamicPlaceholder}
-                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(dataKey, event.target.value)}
+                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(dataKey, event.target.value, 1)}
                 className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
             </div>
