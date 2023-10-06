@@ -57,7 +57,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
 
     //Generate number of input boxes equal to headers
     const inputHeaderBoxes = Object.keys(currRequest.headers).map((headerKey : string) => {
-        dynamicPlaceholder = "Example is " + currRequest.headers[headerKey]
+        dynamicPlaceholder = "Ex: " + currRequest.headers[headerKey]
         return (
             <div key={headerKey} className = "flex mb-4">
                 <label className="block text-sm font-bold mb-2 mr-2 w-20">
@@ -74,7 +74,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     });
 
     const inputDataBoxes = Object.keys(currRequest.data).map((dataKey : string) => {
-        dynamicPlaceholder = "Example is " + currRequest.data[dataKey]
+        dynamicPlaceholder = "Ex: " + currRequest.data[dataKey]
         return (
             <div key={dataKey} className = "flex mb-4">
                 <label className="block text-sm font-bold mb-2 mr-2 w-20">
