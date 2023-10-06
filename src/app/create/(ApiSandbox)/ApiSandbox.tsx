@@ -11,6 +11,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     const currRequest = props.docketObject.currApiRequest;
 
     const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.headers).map((key) => [key, ''])));
+    const [newData, setNewData] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.data).map((key) => [key, ''])));
     const [apiResponse, setApiResponse] = useState<string | null>(null); // Store the API response
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
@@ -30,29 +31,60 @@ export default function ApiSandbox( props : ApiSandboxProps) {
             console.error('Error making API call:', error);
           }
           setButtonClicked(true);
-          console.log(props.docketObject);
     }
 
-    function handleChange(headerName : string, newHeader : string) {
-        setNewHeaders((previousHeader) => ({
-            ...previousHeader,
-            [headerName] : newHeader,
+    function handleChange(inputKey : string, newInput : string) {
+        setNewHeaders((previousValues) => ({
+            ...previousValues,
+            [inputKey] : newInput,
         }));
         setButtonClicked(false);
     };
 
+    //Function to generate labels for the boxes
+    function generateTitleLabels(input : string) : string {
+        // Use a regular expression to split the string by uppercase letters
+      const words = input.split(/(?=[A-Z])/);
+
+      // Capitalize the first letter of each word and join them with spaces
+      const titleCase = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      
+      return titleCase + ":";
+  }
+
+
     var dynamicPlaceholder;
 
     //Generate number of input boxes equal to headers
-    const inputBoxes = Object.keys(currRequest.headers).map((headerKey : string, index : number) => {
+    const inputHeaderBoxes = Object.keys(currRequest.headers).map((headerKey : string) => {
         dynamicPlaceholder = "Example is " + currRequest.headers[headerKey]
         return (
-            <div key={index} className = "flex mb-4">
+            <div key={headerKey} className = "flex mb-4">
+                <label className="block text-sm font-bold mb-2 mr-2 w-20">
+                    { generateTitleLabels(headerKey) }
+                </label>
                 <input
                 type="text"
                 placeholder={dynamicPlaceholder}
                 onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerKey, event.target.value)}
-                className="text-black w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
+                className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
+                />
+            </div>
+            );
+    });
+
+    const inputDataBoxes = Object.keys(currRequest.data).map((dataKey : string) => {
+        dynamicPlaceholder = "Example is " + currRequest.data[dataKey]
+        return (
+            <div key={dataKey} className = "flex mb-4">
+                <label className="block text-sm font-bold mb-2 mr-2 w-20">
+                    { generateTitleLabels(dataKey) }
+                </label>
+                <input
+                type="text"
+                placeholder={dynamicPlaceholder}
+                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(dataKey, event.target.value)}
+                className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
             </div>
             );
@@ -60,8 +92,19 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     
     return (
     <div className="flex flex-col items-center mt-40">
-        {/* Input boxes */}
-        {inputBoxes}
+        {/* Input boxes for users to put in headers*/}
+        {inputHeaderBoxes}
+        {/* Input boxes for users to put in data if the curl has data*/}
+        {inputDataBoxes.length != 0 ? (
+            <>
+            <div className='mb-2'>
+            Data
+            </div>
+            {inputDataBoxes}
+            </>
+        ) : (<></>
+        )}
+        
         {/* Execute button */}
         <button
           type="button"
@@ -81,7 +124,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
             ) : !apiResponse && buttonClicked ? (
                 <p>Error Making Api Call</p>
             ) : (
-                <p>Waiting</p>
+                <></>
             )}
         </div>
     </div>

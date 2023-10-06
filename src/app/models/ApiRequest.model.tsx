@@ -3,5 +3,5 @@ export interface ApiRequest {
     httpMethod : HttpMethod;
     url : string;
     headers : Record<string, string>;
-    body : Record<string, string>;
+    data : Record<string, string>;
 }

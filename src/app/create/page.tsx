@@ -25,7 +25,7 @@ export default function Page() {
             httpMethod: HttpMethod.GET,
             url: '',
             headers: {},
-            body: {},
+            data: {},
         }
     );
 
@@ -58,7 +58,7 @@ export default function Page() {
             url : getUrl(),
             httpMethod : getHttpMethod(),
             headers : getHeaders(),
-            body : {},
+            data : getData(),
         });
     }
 
@@ -117,6 +117,28 @@ export default function Page() {
         return result;
     }
 
+    function getData() : Record<string, string> {
+        // Use regular expressions to extract data
+        const dataPattern : RegExp = /-d '(.+?)'/;
+        const dataMatches = formData.apiInput.match(dataPattern);
+
+
+        const result : Record<string, string> = {};
+        if (dataMatches) {
+            const jsonDataString = dataMatches[1];
+            const jsonDataObject = JSON.parse(jsonDataString);
+
+            //Iterate over the properties of the object
+            for (const dataKey in jsonDataObject) {
+                if(Object.prototype.hasOwnProperty.call(jsonDataObject, dataKey)) {
+                    const dataValue = jsonDataObject[dataKey];
+                    result[dataKey] = dataValue;
+                }
+            }
+        }
+        return result;
+    }
+
     function generateTitleLabels(input : string) : string {
           // Use a regular expression to split the string by uppercase letters
         const words = input.split(/(?=[A-Z])/);
@@ -127,10 +149,10 @@ export default function Page() {
         return titleCase + ":";
     }
 
-    const formFields = Object.keys(formData).map((fieldKey : string, index : number) => {
+    const formFields = Object.keys(formData).map((fieldKey : string) => {
         return (
             <>                
-                <div key={index} className = "flex mb-4">
+                <div key={fieldKey} className = "flex mb-4">
                     <label className="block text-sm font-bold mb-2 w-full mr-5">
                         { generateTitleLabels(fieldKey) }
                     </label>
@@ -150,7 +172,7 @@ export default function Page() {
     return (
     <>
         {isSubmitted ? (
-            <div className="flex flex-col mx-auto items-center">
+            <div className="flex flex-col mx-auto max-w-lg items-center">
                 <ApiSandbox docketObject = { currDocketObject } />
                 <DocGenerator docketObject = { currDocketObject }/>
             </div>
