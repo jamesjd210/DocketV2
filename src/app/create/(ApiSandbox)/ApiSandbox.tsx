@@ -1,36 +1,95 @@
-import React, { useState, SyntheticEvent } from 'react';
+import React, { useState, SyntheticEvent, useEffect } from 'react';
 import { ApiRequest } from '@/models/ApiRequest.model';
 import CodeProvider from './Code-Provider';
 import { DocketObject } from '@/models/DocketObject.model';
+import { HttpMethod } from '@/models/HttpMethod.model';
+
 
 interface ApiSandboxProps {
     docketObject : DocketObject;
 }
+
 export default function ApiSandbox( props : ApiSandboxProps) {
+    
 
     const currRequest = props.docketObject.currApiRequest;
 
     const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.headers).map((key) => [key, ''])));
     const [newData, setNewData] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.data).map((key) => [key, ''])));
-    const [apiResponse, setApiResponse] = useState<string | null>(null); // Store the API response
+    const [apiResponseJson, setApiResponse] = useState<string | null>(null); // Store the API response
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
-    async function handleButtonClick() {
-        try {
-            // Make an API call
-            const response = await fetch(currRequest.url, {
-                method : currRequest.httpMethod, 
-                headers : newHeaders,
+    function handleButtonClick() {
+        if(currRequest.httpMethod == HttpMethod.GET) {
+            fetchWithoutBody()
+        } else {
+            fetchWithBody()
+        }
+      }
+      
+    function fetchWithoutBody() {
+        fetch(currRequest.url, {
+            method: currRequest.httpMethod,
+            headers: newHeaders,
+          })
+            .then((response : Response) => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              const contentType = response.headers.get('Content-Type');
+              if(contentType?.includes('application/json')) {
+                  return response.json();
+              }
+              return response.text()
+            })
+            .then((dataResponse) => {
+              // Handle the successful response data
+              setApiResponse(dataResponse);
+    
+            })
+            .catch((error) => {
+              // Handle errors
+              console.error('Error making API call:', error);
+            })
+            .finally(() => {
+              // Set the buttonClicked state regardless of success or error
+              setButtonClicked(true);
             });
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setApiResponse(data);
-          } catch (error) {
-            console.error('Error making API call:', error);
+    }
+
+    function fetchWithBody() {
+        let requestData = "{}";
+        if (newData) {
+            requestData = JSON.stringify(newData);
           }
-          setButtonClicked(true);
+        fetch(currRequest.url, {
+            method: currRequest.httpMethod,
+            headers: newHeaders,
+            body: requestData
+          })
+            .then((response : Response) => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              const contentType = response.headers.get('Content-Type');
+              if(contentType?.includes('application/json')) {
+                  return response.json();
+              }
+              return response.text()
+            })
+            .then((dataResponse) => {
+              // Handle the successful response data
+              setApiResponse(dataResponse);
+    
+            })
+            .catch((error) => {
+              // Handle errors
+              console.error('Error making API call:', error);
+            })
+            .finally(() => {
+              // Set the buttonClicked state regardless of success or error
+              setButtonClicked(true);
+            });
     }
 
     function handleChange(inputKey : string, newValue : string, flag : number) {
@@ -46,6 +105,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
             }));
         }
         setButtonClicked(false);
+        setApiResponse(null);
     };
 
     //Function to generate labels for the boxes
@@ -123,12 +183,12 @@ export default function ApiSandbox( props : ApiSandboxProps) {
         
         {/* API response */}
         <div className="mt-4">
-            {apiResponse ? (
+            {apiResponseJson !== null ? (
             <div className="">
-                <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponse, null, 4)}</pre>
+                <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
                 <CodeProvider apiRequest = { currRequest }/>
             </div>
-            ) : !apiResponse && buttonClicked ? (
+            ) : buttonClicked ? (
                 <p>Error Making Api Call</p>
             ) : (
                 <></>
