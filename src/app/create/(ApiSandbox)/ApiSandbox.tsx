@@ -1,5 +1,4 @@
 import React, { useState, SyntheticEvent, useEffect } from 'react';
-import { ApiRequest } from '@/models/ApiRequest.model';
 import CodeProvider from './Code-Provider';
 import { DocketObject } from '@/models/DocketObject.model';
 import { HttpMethod } from '@/models/HttpMethod.model';
