@@ -1,7 +1,7 @@
 import React, { useState, SyntheticEvent, useEffect } from 'react';
 import CodeProvider from './Code-Provider';
 import { DocketObject } from '@/models/DocketObject.model';
-import { HttpMethod } from '@/models/HttpMethod.model';
+import { HTTP_METHODS } from 'next/dist/server/web/http';
 
 
 interface ApiSandboxProps {
@@ -12,15 +12,16 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     
 
     const currRequest = props.docketObject.currApiRequest;
-
     const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.headers).map((key) => [key, ''])));
     const [newData, setNewData] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.data).map((key) => [key, ''])));
     const [apiResponseJson, setApiResponse] = useState<string | null>(null); // Store the API response
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
     function handleButtonClick() {
-        if(currRequest.httpMethod == HttpMethod.GET) {
+      //If the http method is GET, HEAD, or OPTIONS, do not include a body
+        if(HTTP_METHODS.slice(0,3).includes(currRequest.httpMethod)) {
             fetchWithoutBody()
+      //Else if the http method is POST PUT DELETE PATCH include the body
         } else {
             fetchWithBody()
         }
