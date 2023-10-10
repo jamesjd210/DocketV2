@@ -4,10 +4,13 @@ import { ApiForm } from '@/models/ApiForm.model'
 import { ApiRequest } from '@/models/ApiRequest.model';
 import ApiSandbox from '@/create/(ApiSandbox)/ApiSandbox';
 import DocGenerator from './(CreateDocs)/DocGenerator';
-import { DocketObject } from '@/models/DocketObject.model';
 import { HTTP_METHOD, HTTP_METHODS } from 'next/dist/server/web/http';
+import { useDocketObject } from './DocketDataProvider';
 
 export default function Page() {
+
+    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+
     //Tracking the state of the form data from user
     const [formData, setFormData] = useState<ApiForm>({
         companyName : '',
@@ -18,6 +21,7 @@ export default function Page() {
         apiOneLiner : '',
         additionalInfo : '',
     });
+    
     //Tracking the current api request that is used for execution
     const [CurrentApiRequest, setApiRequest] = useState<ApiRequest> ({
             // Initialize with default values for ApiRequest properties
@@ -27,13 +31,6 @@ export default function Page() {
             data: {},
         }
     );
-
-    //All data needed for docket functionality default values
-    const [currDocketObject, setDocketObject] = useState<DocketObject> ({
-        currApiForm : formData,
-        currApiRequest : CurrentApiRequest,
-        codeTranslations : null,
-    });
 
     //Tracking if the form was submitted
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -62,10 +59,7 @@ export default function Page() {
     }
 
     useEffect(() => {
-        setDocketObject({
-            currApiForm : formData,
-            currApiRequest : CurrentApiRequest,
-        } as DocketObject);
+        handleUpdateDocketObject(formData, CurrentApiRequest, null);
     }, [CurrentApiRequest]);
 
     function getHttpMethod() : HTTP_METHOD {
@@ -149,6 +143,7 @@ export default function Page() {
         return titleCase + ":";
     }
 
+    //Generate the fields of the form based on the ApiForm Model
     const formFields = Object.keys(formData).map((fieldKey : string) => {
         return (
             <>                
@@ -173,8 +168,8 @@ export default function Page() {
     <>
         {isSubmitted ? (
             <div className="flex flex-col mx-auto max-w-lg items-center">
-                <ApiSandbox docketObject = { currDocketObject } />
-                <DocGenerator docketObject = { currDocketObject }/>
+                <ApiSandbox/>
+                <DocGenerator/>
             </div>
         ) : (
         <div className="flex flex-wrap max-w-lg mx-auto mt-20">

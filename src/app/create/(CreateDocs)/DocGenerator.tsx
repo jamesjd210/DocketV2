@@ -1,16 +1,10 @@
-import React, { useState, SyntheticEvent } from 'react';
-import { ApiForm } from '@/models/ApiForm.model'
-import { ApiRequest } from '@/models/ApiRequest.model';
 import  DownloadDoc  from '@/create/(CreateDocs)/DownloadDoc'
-import { DocketObject } from '@/models/DocketObject.model';
+import { useDocketObject } from '@/create/DocketDataProvider';
 
-interface DocGeneratorProps {
-    docketObject : DocketObject;
-}
-
-export default function DocGenerator(props : DocGeneratorProps) {
-    const currentApiForm = props.docketObject.currApiForm;
-    const currentApiRequest = props.docketObject.currApiRequest;
+export default function DocGenerator() {
+    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const currentApiForm = docketObject.currApiForm;
+    const currentApiRequest = docketObject.currApiRequest;
     
     function generateGeneralInfo() : string {
         const generalInfo = 
