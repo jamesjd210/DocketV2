@@ -1,3 +1,4 @@
+'use client'
 export default function CreateDocsLayout({
     children, // will be a page or nested layout
   }: {

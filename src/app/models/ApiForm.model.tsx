@@ -1,5 +1,4 @@
 export interface ApiForm {
-    textInput : string;
     companyName : string;
     developerName : string;
     developerEmail : string;

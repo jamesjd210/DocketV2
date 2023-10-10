@@ -19,12 +19,12 @@ Method: ${currentApiRequest.httpMethod}
 Automated with **Ducks**
 # Introduction
 Welcome to the ${currentApiForm.apiName} documentation made by ${currentApiForm.companyName}. This API i sdesigned to provide ${currentApiForm.apiOneLiner}. This documentation will guide you through the usage
-of the Api, including a functional sandbox, header descriptions, curl commands and other code translations.
-**Developer  Name:** ${currentApiForm.developerName}
-**Developer Email:** ${currentApiForm.developerEmail}
-**API Name:** ${currentApiForm.apiName}
-**API Use Case:** ${currentApiForm.apiOneLiner}
-**Additional Relevant Info:** ${currentApiForm.developerEmail}
+of the Api, including a functional sandbox, header descriptions, curl commands and other code translations.\n
+**Developer  Name:** ${currentApiForm.developerName}\n
+**Developer Email:** ${currentApiForm.developerEmail}\n
+**API Name:** ${currentApiForm.apiName}\n
+**API Use Case:** ${currentApiForm.apiOneLiner}\n
+**Additional Relevant Info:** ${currentApiForm.developerEmail}\n
         `
         return generalInfo
     }

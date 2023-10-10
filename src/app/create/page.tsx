@@ -10,7 +10,6 @@ import { HTTP_METHOD, HTTP_METHODS } from 'next/dist/server/web/http';
 export default function Page() {
     //Tracking the state of the form data from user
     const [formData, setFormData] = useState<ApiForm>({
-        textInput : '',
         companyName : '',
         developerName : '',
         developerEmail : '',
