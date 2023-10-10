@@ -165,9 +165,9 @@ export default function CodeProvider(props : CodeProviderProps) {
     }
 
     return (
-      <>
+      <pre className = "text-black bg-gray-100 p-5 rounded shadow">
         {codeSelector}
         {codeExample === null  ? <>Select an option</> : codeExample}
-      </>
+      </pre>
     );
 }

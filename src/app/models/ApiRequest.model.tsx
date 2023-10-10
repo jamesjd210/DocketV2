@@ -1,6 +1,6 @@
-import { HttpMethod } from '@/models/HttpMethod.model'
+import { HTTP_METHOD } from 'next/dist/server/web/http';
 export interface ApiRequest {
-    httpMethod : HttpMethod;
+    httpMethod : HTTP_METHOD;
     url : string;
     headers : Record<string, string>;
     data : Record<string, string>;

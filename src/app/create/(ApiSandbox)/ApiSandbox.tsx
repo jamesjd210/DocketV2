@@ -1,44 +1,112 @@
-import React, { useState, SyntheticEvent } from 'react';
-import { ApiRequest } from '@/models/ApiRequest.model';
+import React, { useState, SyntheticEvent, useEffect } from 'react';
 import CodeProvider from './Code-Provider';
 import { DocketObject } from '@/models/DocketObject.model';
+import { HTTP_METHODS } from 'next/dist/server/web/http';
+
 
 interface ApiSandboxProps {
     docketObject : DocketObject;
 }
+
 export default function ApiSandbox( props : ApiSandboxProps) {
+    
 
     const currRequest = props.docketObject.currApiRequest;
-
     const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.headers).map((key) => [key, ''])));
     const [newData, setNewData] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.data).map((key) => [key, ''])));
-    const [apiResponse, setApiResponse] = useState<string | null>(null); // Store the API response
+    const [apiResponseJson, setApiResponse] = useState<string | null>(null); // Store the API response
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
-    async function handleButtonClick() {
-        try {
-            // Make an API call
-            const response = await fetch(currRequest.url, {
-                method : currRequest.httpMethod, 
-                headers : newHeaders,
+    function handleButtonClick() {
+      //If the http method is GET, HEAD, or OPTIONS, do not include a body
+        if(HTTP_METHODS.slice(0,3).includes(currRequest.httpMethod)) {
+            fetchWithoutBody()
+      //Else if the http method is POST PUT DELETE PATCH include the body
+        } else {
+            fetchWithBody()
+        }
+      }
+      
+    function fetchWithoutBody() {
+        fetch(currRequest.url, {
+            method: currRequest.httpMethod,
+            headers: newHeaders,
+          })
+            .then((response : Response) => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              const contentType = response.headers.get('Content-Type');
+              if(contentType?.includes('application/json')) {
+                  return response.json();
+              }
+              return response.text()
+            })
+            .then((dataResponse) => {
+              // Handle the successful response data
+              setApiResponse(dataResponse);
+    
+            })
+            .catch((error) => {
+              // Handle errors
+              console.error('Error making API call:', error);
+            })
+            .finally(() => {
+              // Set the buttonClicked state regardless of success or error
+              setButtonClicked(true);
+              props.docketObject.currApiRequest = currRequest;
             });
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setApiResponse(data);
-          } catch (error) {
-            console.error('Error making API call:', error);
-          }
-          setButtonClicked(true);
     }
 
-    function handleChange(inputKey : string, newInput : string) {
-        setNewHeaders((previousValues) => ({
-            ...previousValues,
-            [inputKey] : newInput,
-        }));
+    function fetchWithBody() {
+        let requestData = "{}";
+        if (newData) {
+            requestData = JSON.stringify(newData);
+          }
+        fetch(currRequest.url, {
+            method: currRequest.httpMethod,
+            headers: newHeaders,
+            body: requestData
+          })
+            .then((response : Response) => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              const contentType = response.headers.get('Content-Type');
+              if(contentType?.includes('application/json')) {
+                  return response.json();
+              }
+              return response.text()
+            })
+            .then((dataResponse) => {
+              // Handle the successful response data
+              setApiResponse(dataResponse);
+    
+            })
+            .catch((error) => {
+              // Handle errors
+              console.error('Error making API call:', error);
+            })
+            .finally(() => {
+              // Set the buttonClicked state regardless of success or error
+              setButtonClicked(true);
+            });
+    }
+
+    function handleChange(inputKey : string, newValue : string, flag : number) {
+        if(flag === 0) {
+            setNewHeaders((previousHeaders) => ({
+                ...previousHeaders,
+                [inputKey] : newValue,
+            }));
+        } else if(flag === 1) {
+            setNewData((previousData) => ({
+                ...previousData,
+                [inputKey] : newValue,
+            }));
+        }
         setButtonClicked(false);
+        setApiResponse(null);
     };
 
     //Function to generate labels for the boxes
@@ -57,7 +125,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
 
     //Generate number of input boxes equal to headers
     const inputHeaderBoxes = Object.keys(currRequest.headers).map((headerKey : string) => {
-        dynamicPlaceholder = "Example is " + currRequest.headers[headerKey]
+        dynamicPlaceholder = "Ex: " + currRequest.headers[headerKey]
         return (
             <div key={headerKey} className = "flex mb-4">
                 <label className="block text-sm font-bold mb-2 mr-2 w-20">
@@ -66,7 +134,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
                 <input
                 type="text"
                 placeholder={dynamicPlaceholder}
-                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerKey, event.target.value)}
+                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(headerKey, event.target.value, 0)}
                 className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
             </div>
@@ -74,7 +142,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     });
 
     const inputDataBoxes = Object.keys(currRequest.data).map((dataKey : string) => {
-        dynamicPlaceholder = "Example is " + currRequest.data[dataKey]
+        dynamicPlaceholder = "Ex: " + currRequest.data[dataKey]
         return (
             <div key={dataKey} className = "flex mb-4">
                 <label className="block text-sm font-bold mb-2 mr-2 w-20">
@@ -83,7 +151,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
                 <input
                 type="text"
                 placeholder={dynamicPlaceholder}
-                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(dataKey, event.target.value)}
+                onChange={(event : React.ChangeEvent<HTMLInputElement>) => handleChange(dataKey, event.target.value, 1)}
                 className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
                 />
             </div>
@@ -93,14 +161,20 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     return (
     <div className="flex flex-col items-center mt-40">
         {/* Input boxes for users to put in headers*/}
-        {inputHeaderBoxes}
+        <div className="mb-10">
+          <p className="text-xl font-semibold">Curl Command:</p> {/* Add appropriate text styling */}
+          <div className="text-gray-300">
+            {props.docketObject.currApiForm.apiCurl}
+          </div>
+        </div>
+          {inputHeaderBoxes}
         {/* Input boxes for users to put in data if the curl has data*/}
         {inputDataBoxes.length != 0 ? (
             <>
-            <div className='mb-2'>
-            Data
-            </div>
-            {inputDataBoxes}
+              <div className='mb-2'>
+              Data
+              </div>
+              {inputDataBoxes}
             </>
         ) : (<></>
         )}
@@ -116,12 +190,17 @@ export default function ApiSandbox( props : ApiSandboxProps) {
         
         {/* API response */}
         <div className="mt-4">
-            {apiResponse ? (
-            <div className="">
-                <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponse, null, 4)}</pre>
-                <CodeProvider apiRequest = { currRequest }/>
-            </div>
-            ) : !apiResponse && buttonClicked ? (
+            {apiResponseJson !== null ? (
+              <div>
+                <div className="mb-8">
+                    <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
+                </div>
+                <div>
+                  <CodeProvider apiRequest = { currRequest }/>
+                </div>
+              </div>
+
+            ) : buttonClicked ? (
                 <p>Error Making Api Call</p>
             ) : (
                 <></>
