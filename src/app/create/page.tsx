@@ -59,7 +59,7 @@ export default function Page() {
     }
 
     useEffect(() => {
-        handleUpdateDocketObject(formData, CurrentApiRequest, null);
+        handleUpdateDocketObject(formData, CurrentApiRequest);
     }, [CurrentApiRequest]);
 
     function getHttpMethod() : HTTP_METHOD {

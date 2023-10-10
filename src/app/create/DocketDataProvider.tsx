@@ -10,8 +10,7 @@ interface DocketDataContextProps {
     docketObject : DocketObject;
     handleUpdateDocketObject : (    
         currApiForm : ApiForm,
-        currApiRequest : ApiRequest,
-        codeTranslations : Record<string, CodeLanguages> | null) => void;
+        currApiRequest : ApiRequest) => void;
 }
 
 const DocketDataContext = createContext<DocketDataContextProps | undefined>(undefined);
