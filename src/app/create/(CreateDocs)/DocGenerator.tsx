@@ -52,7 +52,7 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
         var codeStringBuilder = 
 `
 ## Calling the API:
-\`\`\`>${currentApiForm.apiInput}\`\`\`\n\n
+\`\`\`>${currentApiForm.apiCurl}\`\`\`\n\n
 <details><summary>Python</summary><br><pre><code>{python_script}</code></pre></details>
 <details><summary>TypeScript</summary><br><pre><code>{type_script}</code></pre></details>
 <details><summary>C#</summary><br><pre><code>{cSharp_script}</code></pre></details>\n

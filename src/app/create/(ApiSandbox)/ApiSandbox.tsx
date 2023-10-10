@@ -54,6 +54,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
             .finally(() => {
               // Set the buttonClicked state regardless of success or error
               setButtonClicked(true);
+              props.docketObject.currApiRequest = currRequest;
             });
     }
 
@@ -160,14 +161,20 @@ export default function ApiSandbox( props : ApiSandboxProps) {
     return (
     <div className="flex flex-col items-center mt-40">
         {/* Input boxes for users to put in headers*/}
-        {inputHeaderBoxes}
+        <div className="mb-10">
+          <p className="text-xl font-semibold">Curl Command:</p> {/* Add appropriate text styling */}
+          <div className="text-gray-300">
+            {props.docketObject.currApiForm.apiCurl}
+          </div>
+        </div>
+          {inputHeaderBoxes}
         {/* Input boxes for users to put in data if the curl has data*/}
         {inputDataBoxes.length != 0 ? (
             <>
-            <div className='mb-2'>
-            Data
-            </div>
-            {inputDataBoxes}
+              <div className='mb-2'>
+              Data
+              </div>
+              {inputDataBoxes}
             </>
         ) : (<></>
         )}
@@ -184,10 +191,15 @@ export default function ApiSandbox( props : ApiSandboxProps) {
         {/* API response */}
         <div className="mt-4">
             {apiResponseJson !== null ? (
-            <div className="">
-                <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
-                <CodeProvider apiRequest = { currRequest }/>
-            </div>
+              <div>
+                <div className="mb-8">
+                    <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
+                </div>
+                <div>
+                  <CodeProvider apiRequest = { currRequest }/>
+                </div>
+              </div>
+
             ) : buttonClicked ? (
                 <p>Error Making Api Call</p>
             ) : (

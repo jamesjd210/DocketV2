@@ -13,7 +13,7 @@ export default function Page() {
         companyName : '',
         developerName : '',
         developerEmail : '',
-        apiInput : '',
+        apiCurl : '',
         apiName : '',
         apiOneLiner : '',
         additionalInfo : '',
@@ -70,7 +70,7 @@ export default function Page() {
 
     function getHttpMethod() : HTTP_METHOD {
         const httpMethodRegex : RegExp = /curl -X (\w+)/;
-        const match : RegExpMatchArray | null = formData.apiInput.match(httpMethodRegex);
+        const match : RegExpMatchArray | null = formData.apiCurl.match(httpMethodRegex);
         
         if(match) {
             const methodString = match[1].toUpperCase();
@@ -84,7 +84,7 @@ export default function Page() {
 
     function getUrl() : string {
         const urlPattern : RegExp = /http(s)?:\/\/([^ ]+)/;
-        const match: RegExpMatchArray | null = formData.apiInput.match(urlPattern);
+        const match: RegExpMatchArray | null = formData.apiCurl.match(urlPattern);
         if (match) {
             const url: string = match[0];
             //console.log(url);
@@ -98,7 +98,7 @@ export default function Page() {
     function getHeaders() : Record<string, string> {
         // Use regular expressions to extract header values
         const headerPattern : RegExp = /-H "(.*?)"/g;
-        const headerMatches = formData.apiInput.match(headerPattern);
+        const headerMatches = formData.apiCurl.match(headerPattern);
         
         const result : Record<string,string> = {};
 
@@ -120,7 +120,7 @@ export default function Page() {
     function getData() : Record<string, string> {
         // Use regular expressions to extract data
         const dataPattern : RegExp = /-d '(.+?)'/;
-        const dataMatches = formData.apiInput.match(dataPattern);
+        const dataMatches = formData.apiCurl.match(dataPattern);
 
 
         const result : Record<string, string> = {};
