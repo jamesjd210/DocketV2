@@ -1,4 +1,4 @@
-import VideoThumb from '@/../public/images/hero-image-01.jpg'
+import VideoThumb from '@/../public/images/thumbnail.png'
 import ModalVideo from '@/components/modal-video'
 
 export default function Hero() {
@@ -28,11 +28,11 @@ export default function Hero() {
             <p className="text-xl text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="200">Welcome to enterprise level documentation in 60 seconds.</p>
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
               <div data-aos="fade-up" data-aos-delay="400">
-                <a className="btn text-white bg-purple-600 hover:bg-purple-700 w-full mb-4 sm:w-auto sm:mb-0" href="#0">Start free trial</a>
+                <a className="btn text-white bg-purple-600 hover:bg-purple-700 w-full mb-4 sm:w-auto sm:mb-0" href="https://autodocs.streamlit.app/" target="_blank">Try Now</a>
               </div>
-              <div data-aos="fade-up" data-aos-delay="600">
+              {/* <div data-aos="fade-up" data-aos-delay="600">
                 <a className="btn text-white bg-gray-700 hover:bg-gray-800 w-full sm:w-auto sm:ml-4" href="#0">Learn more</a>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -41,9 +41,8 @@ export default function Hero() {
             thumbWidth={1024}
             thumbHeight={576}
             thumbAlt="Modal video thumbnail"
-            video="/videos/video.mp4"
-            videoWidth={1920}
-            videoHeight={1080} />
+            videoWidth={1080}
+            videoHeight={630} />
 
         </div>
 

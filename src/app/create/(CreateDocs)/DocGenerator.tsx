@@ -1,16 +1,11 @@
-import React, { useState, SyntheticEvent } from 'react';
-import { ApiForm } from '@/models/ApiForm.model'
-import { ApiRequest } from '@/models/ApiRequest.model';
 import  DownloadDoc  from '@/create/(CreateDocs)/DownloadDoc'
-import { DocketObject } from '@/models/DocketObject.model';
+import { useDocketObject } from '@/create/DocketDataProvider';
+import { CodeLanguages } from '@/models/CodeLanguages.model';
 
-interface DocGeneratorProps {
-    docketObject : DocketObject;
-}
-
-export default function DocGenerator(props : DocGeneratorProps) {
-    const currentApiForm = props.docketObject.currApiForm;
-    const currentApiRequest = props.docketObject.currApiRequest;
+export default function DocGenerator() {
+    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const currentApiForm = docketObject.currApiForm;
+    const currentApiRequest = docketObject.currApiRequest;
     
     function generateGeneralInfo() : string {
         const generalInfo = 
@@ -49,13 +44,14 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
     }
 
     function generateCode() {
+        console.log(docketObject)
         var codeStringBuilder = 
 `
 ## Calling the API:
 \`\`\`>${currentApiForm.apiCurl}\`\`\`\n\n
-<details><summary>Python</summary><br><pre><code>{python_script}</code></pre></details>
-<details><summary>TypeScript</summary><br><pre><code>{type_script}</code></pre></details>
-<details><summary>C#</summary><br><pre><code>{cSharp_script}</code></pre></details>\n
+<details><summary>Python</summary><br><pre><code>${docketObject.codeTranslations![CodeLanguages.PYTHON]}</code></pre></details>
+<details><summary>Javascript</summary><br><pre><code>${docketObject.codeTranslations!.Javascript}</code></pre></details>
+<details><summary>Java</summary><br><pre><code>${docketObject.codeTranslations!.Java}</code></pre></details>\n
 ## Output:
 \`\`\`TODO\`\`\`
 `

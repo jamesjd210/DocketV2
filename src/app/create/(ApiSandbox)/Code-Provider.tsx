@@ -1,13 +1,12 @@
 import { ApiRequest } from '@/models/ApiRequest.model';
+import { useDocketObject } from '@/create/DocketDataProvider';
 import React, { useState } from 'react';
+import { CodeLanguages } from '@/models/CodeLanguages.model';
 
-interface CodeProviderProps {
-  apiRequest : ApiRequest;
-}
-
-export default function CodeProvider(props : CodeProviderProps) {
+export default function CodeProvider() {
     const [selectedLanguage, setSelectedLanguage] = useState('javascript');
-
+    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const currRequest = docketObject.currApiRequest;
     function handleLanguageChange(event : React.ChangeEvent<HTMLSelectElement>) {
         const language = event.target.value;
         setSelectedLanguage(language);
@@ -16,17 +15,17 @@ export default function CodeProvider(props : CodeProviderProps) {
     function getJavascript() : string {
         var inputHeaders = "";
 
-        for (var i in props.apiRequest.headers) {
-            inputHeaders += `'${i}' : '${props.apiRequest.headers[i]}',\n\t\t\t\t`
+        for (var i in currRequest.headers) {
+            inputHeaders += `'${i}' : '${currRequest.headers[i]}',\n\t\t\t\t`
         }
         const javascriptCode = `
-        const url = '${props.apiRequest.url}';
+        const url = '${currRequest.url}';
         const headers = new Headers({
         ${inputHeaders}
         });
 
         fetch(url, {
-        method: '${props.apiRequest.httpMethod}',
+        method: '${currRequest.httpMethod}',
         headers: headers
         })
         .then(response => {
@@ -47,15 +46,15 @@ export default function CodeProvider(props : CodeProviderProps) {
 
     function getPython() : string {
         var inputHeaders = "";
-        for (var i in props.apiRequest.headers) {
-            inputHeaders += `"${i}" : "${props.apiRequest.headers[i]}",\n\t\t\t\t`
+        for (var i in currRequest.headers) {
+            inputHeaders += `"${i}" : "${currRequest.headers[i]}",\n\t\t\t\t`
         }
 
         const pythonCode = `
         import requests 
 
         def make_http_request():
-            url = "${props.apiRequest.url}"
+            url = "${currRequest.url}"
             headers = {
                 ${inputHeaders}
             }
@@ -74,8 +73,8 @@ export default function CodeProvider(props : CodeProviderProps) {
 
     function getJava() : string {
       var inputHeaders = "";
-      for (var i in props.apiRequest.headers) {
-          inputHeaders += `connection.setRequestProperty("${i}" : "${props.apiRequest.headers[i]}");\n\t\t\t\t`
+      for (var i in currRequest.headers) {
+          inputHeaders += `connection.setRequestProperty("${i}" : "${currRequest.headers[i]}");\n\t\t\t\t`
       }
 
       const javaCode = `
@@ -88,13 +87,13 @@ export default function CodeProvider(props : CodeProviderProps) {
           public static void main(String[] args) {
               try {
                   // Define the URL
-                  URL url = new URL("${props.apiRequest.url}");
+                  URL url = new URL("${currRequest.url}");
 
                   // Open a connection to the URL
                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                  // Set the request method to ${props.apiRequest.httpMethod}
-                  connection.setRequestMethod("${props.apiRequest.httpMethod}");
+                  // Set the request method to ${currRequest.httpMethod}
+                  connection.setRequestMethod("${currRequest.httpMethod}");
 
                   // Set custom headers
                   ${inputHeaders}
@@ -136,7 +135,6 @@ export default function CodeProvider(props : CodeProviderProps) {
             value={selectedLanguage}
             onChange={handleLanguageChange}
             className="border p-2 rounded-md bg-white text-black shadow-md focus:outline-none w-36"
-            defaultValue={"javascript"}
           >
             <option value="javascript" className="py-2">
               JavaScript
@@ -153,15 +151,24 @@ export default function CodeProvider(props : CodeProviderProps) {
     );
 
     let codeExample = null;
+    const javaScriptCode = getJavascript();
+    const pythonCode = getPython();
+    const javaCode = getJava();
+
+    docketObject.codeTranslations![CodeLanguages.JAVASCRIPT] = javaScriptCode;
+    docketObject.codeTranslations![CodeLanguages.PYTHON] = pythonCode;
+    docketObject.codeTranslations![CodeLanguages.JAVA] = javaCode;
+
+    console.log(docketObject)
     switch(selectedLanguage) {
         case 'javascript':
-            codeExample = <p className = "whitespace-pre">{getJavascript()}</p>;
+            codeExample = <p className = "whitespace-pre">{ javaScriptCode }</p>;
             break;
         case 'python':
-            codeExample = <p className = "whitespace-pre">{ getPython() }</p>;
+            codeExample = <p className = "whitespace-pre">{ pythonCode }</p>;
             break;
         case 'java':
-            codeExample = <p className = "whitespace-pre">{ getJava()} </p>
+            codeExample = <p className = "whitespace-pre">{ javaCode } </p>
     }
 
     return (

@@ -1,19 +1,15 @@
 import React, { useState, SyntheticEvent, useEffect } from 'react';
 import CodeProvider from './Code-Provider';
-import { DocketObject } from '@/models/DocketObject.model';
 import { HTTP_METHODS } from 'next/dist/server/web/http';
+import { useDocketObject } from '@/create/DocketDataProvider';
 
-
-interface ApiSandboxProps {
-    docketObject : DocketObject;
-}
-
-export default function ApiSandbox( props : ApiSandboxProps) {
+export default function ApiSandbox() {
     
+    const { docketObject , handleUpdateDocketObject } = useDocketObject();
 
-    const currRequest = props.docketObject.currApiRequest;
-    const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.headers).map((key) => [key, ''])));
-    const [newData, setNewData] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.data).map((key) => [key, ''])));
+    const currRequest = docketObject.currApiRequest;
+    const [newHeaders, setNewHeaders] = useState<Record<string, string>>();
+    const [newData, setNewData] = useState<Record<string, string>>();
     const [apiResponseJson, setApiResponse] = useState<string | null>(null); // Store the API response
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
@@ -25,7 +21,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
         } else {
             fetchWithBody()
         }
-      }
+    }
       
     function fetchWithoutBody() {
         fetch(currRequest.url, {
@@ -54,7 +50,6 @@ export default function ApiSandbox( props : ApiSandboxProps) {
             .finally(() => {
               // Set the buttonClicked state regardless of success or error
               setButtonClicked(true);
-              props.docketObject.currApiRequest = currRequest;
             });
     }
 
@@ -164,7 +159,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
         <div className="mb-10">
           <p className="text-xl font-semibold">Curl Command:</p> {/* Add appropriate text styling */}
           <div className="text-gray-300">
-            {props.docketObject.currApiForm.apiCurl}
+            {docketObject.currApiForm.apiCurl}
           </div>
         </div>
           {inputHeaderBoxes}
@@ -196,7 +191,7 @@ export default function ApiSandbox( props : ApiSandboxProps) {
                     <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
                 </div>
                 <div>
-                  <CodeProvider apiRequest = { currRequest }/>
+                  <CodeProvider/>
                 </div>
               </div>
 
