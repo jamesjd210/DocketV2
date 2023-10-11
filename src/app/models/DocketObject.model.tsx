@@ -4,5 +4,5 @@ import { CodeLanguages } from './CodeLanguages.model';
 export interface DocketObject {
     currApiForm : ApiForm;
     currApiRequest : ApiRequest;
-    codeTranslations : Record<string, CodeLanguages> | null
+    codeTranslations : Record<CodeLanguages, string > | null
 }

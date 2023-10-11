@@ -34,12 +34,12 @@ export function DocketDataProvider({children,} : {children: React.ReactNode}) {
         additionalInfo : '',
     };
 
-    const defaultCodeTranslations : Record<string, CodeLanguages> = { 
-        javascript : CodeLanguages.JAVASCRIPT,
-        python : CodeLanguages.PYTHON,
-        java : CodeLanguages.JAVA,
-        csharp : CodeLanguages.CSHARP,
-        php : CodeLanguages.PHP,
+    const defaultCodeTranslations : Record<CodeLanguages, string> = { 
+        [CodeLanguages.JAVASCRIPT] : "",
+        [CodeLanguages.PYTHON] : "",
+        [CodeLanguages.JAVA] : "",
+        [CodeLanguages.CSHARP] : "",
+        [CodeLanguages.PHP] : "",
     };
 
     const defaultApiRequest : ApiRequest = {

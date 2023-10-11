@@ -8,8 +8,8 @@ export default function ApiSandbox() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
 
     const currRequest = docketObject.currApiRequest;
-    const [newHeaders, setNewHeaders] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.headers).map((key) => [key, ''])));
-    const [newData, setNewData] = useState<Record<string, string>>(Object.fromEntries ( Object.keys(currRequest.data).map((key) => [key, ''])));
+    const [newHeaders, setNewHeaders] = useState<Record<string, string>>();
+    const [newData, setNewData] = useState<Record<string, string>>();
     const [apiResponseJson, setApiResponse] = useState<string | null>(null); // Store the API response
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
 
@@ -191,7 +191,7 @@ export default function ApiSandbox() {
                     <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
                 </div>
                 <div>
-                  <CodeProvider apiRequest = { currRequest }/>
+                  <CodeProvider/>
                 </div>
               </div>
 

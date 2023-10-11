@@ -10,7 +10,6 @@ interface ModalVideoProps {
   thumbWidth: number
   thumbHeight: number
   thumbAlt: string
-  video: string
   videoWidth: number
   videoHeight: number
 }
@@ -20,7 +19,6 @@ export default function ModalVideo({
   thumbWidth,
   thumbHeight,
   thumbAlt,
-  video,
   videoWidth,
   videoHeight,
 }: ModalVideoProps) {
@@ -78,10 +76,7 @@ export default function ModalVideo({
           >
             <div className="max-w-6xl mx-auto h-full flex items-center">
               <Dialog.Panel className="w-full max-h-full aspect-video bg-black overflow-hidden">
-                <video ref={videoRef} width={videoWidth} height={videoHeight} loop controls>
-                  <source src={video} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <iframe width={videoWidth} height={videoHeight} src="https://www.youtube.com/embed/pVa5WiDW97o?si=VaT6qox7y-XOU6Z5" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               </Dialog.Panel>
             </div>
           </Transition.Child>
