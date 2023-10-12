@@ -5,4 +5,4 @@ export enum CodeLanguages {
     CSHARP = 'C#',
     PHP = 'PHP',
     // Add other coding languages as needed
-  }
+}

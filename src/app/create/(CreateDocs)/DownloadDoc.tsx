@@ -4,7 +4,7 @@ interface DownloadDocProps {
     documentContent : string;
 }
 
-export default function DocGenerator(props : DownloadDocProps) {
+export default function DownloadDoc(props : DownloadDocProps) {
 
     function handleDownloadClick() {
         const blob = new Blob([props.documentContent], { type : 'text/markdown' });
@@ -17,7 +17,7 @@ export default function DocGenerator(props : DownloadDocProps) {
         URL.revokeObjectURL(url);
     };
     return (
-        <button onClick={handleDownloadClick} className="btn-download bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 cursor-pointer mt-4">
+        <button onClick={handleDownloadClick} className="btn-download bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 cursor-pointer mt-4 mb-4">
           Download Markdown
         </button>
     );
