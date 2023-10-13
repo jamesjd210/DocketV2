@@ -58,6 +58,7 @@ export default function Page() {
         });
     }
 
+    //Make sure the DocketObject only has the most recent data
     useEffect(() => {
         handleUpdateDocketObject(formData, CurrentApiRequest);
     }, [CurrentApiRequest]);
@@ -146,8 +147,8 @@ export default function Page() {
     //Generate the fields of the form based on the ApiForm Model
     const formFields = Object.keys(formData).map((fieldKey : string) => {
         return (
-            <>                
-                <div key={fieldKey} className = "flex mb-4">
+            <div key={fieldKey} >                
+                <div className = "flex mb-4">
                     <label className="block text-sm font-bold mb-2 w-full mr-5">
                         { generateTitleLabels(fieldKey) }
                     </label>
@@ -159,7 +160,7 @@ export default function Page() {
                     className="text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
                     />
                 </div>
-            </>
+            </div>
         );
     });
 
@@ -169,7 +170,6 @@ export default function Page() {
         {isSubmitted ? (
             <div className="flex flex-col mx-auto max-w-lg items-center">
                 <ApiSandbox/>
-                <DocGenerator/>
             </div>
         ) : (
         <div className="flex flex-wrap max-w-lg mx-auto mt-20">

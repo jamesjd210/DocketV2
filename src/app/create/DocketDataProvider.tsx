@@ -53,6 +53,7 @@ export function DocketDataProvider({children,} : {children: React.ReactNode}) {
         currApiForm : defaultApiForm,
         currApiRequest : defaultApiRequest,
         codeTranslations : defaultCodeTranslations,
+        response : null,
     });
     
     function handleUpdateDocketObject (newApiForm : ApiForm, newApiRequest : ApiRequest) {

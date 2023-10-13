@@ -1,6 +1,5 @@
-import  DownloadDoc  from '@/create/(CreateDocs)/DownloadDoc'
 import { useDocketObject } from '@/create/DocketDataProvider';
-import { CodeLanguages } from '@/models/CodeLanguages.model';
+import DownloadDoc from '@/create/(CreateDocs)/DownloadDoc';
 
 export default function DocGenerator() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
@@ -13,7 +12,7 @@ export default function DocGenerator() {
 Method: ${currentApiRequest.httpMethod}
 Automated with **Ducks**
 # Introduction
-Welcome to the ${currentApiForm.apiName} documentation made by ${currentApiForm.companyName}. This API i sdesigned to provide ${currentApiForm.apiOneLiner}. This documentation will guide you through the usage
+Welcome to the ${currentApiForm.apiName} documentation made by ${currentApiForm.companyName}. This API is designed to provide ${currentApiForm.apiOneLiner}. This documentation will guide you through the usage
 of the Api, including a functional sandbox, header descriptions, curl commands and other code translations.\n
 **Developer  Name:** ${currentApiForm.developerName}\n
 **Developer Email:** ${currentApiForm.developerEmail}\n
@@ -44,23 +43,31 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
     }
 
     function generateCode() {
-        console.log(docketObject)
-        var codeStringBuilder = 
+        //console.log(docketObject) 
+        const pythonString = docketObject.codeTranslations.Python;
+        const javascriptString = docketObject.codeTranslations.Javascript;
+        const javaString = docketObject.codeTranslations.Java;
+        const codeStringBuilder = 
 `
 ## Calling the API:
 \`\`\`>${currentApiForm.apiCurl}\`\`\`\n\n
-<details><summary>Python</summary><br><pre><code>${docketObject.codeTranslations![CodeLanguages.PYTHON]}</code></pre></details>
-<details><summary>Javascript</summary><br><pre><code>${docketObject.codeTranslations!.Javascript}</code></pre></details>
-<details><summary>Java</summary><br><pre><code>${docketObject.codeTranslations!.Java}</code></pre></details>\n
+<details><summary>Python</summary><br><pre><code>${pythonString}</code></pre></details>\n
+<details><summary>Java</summary><br><pre><code>${javaString}</code></pre></details>\n
+<details><summary>Javascript</summary><br><pre><code>${javascriptString}</code></pre></details>\n
 ## Output:
-\`\`\`TODO\`\`\`
+\`\`\`
+${JSON.stringify(docketObject.response,null, 4)}
+\`\`\`
 `
+        console.log(codeStringBuilder);
         return codeStringBuilder;
     }
 
+    const allCode = generateGeneralInfo() + generateHeadersSpec() + generateCode();
+
     return (
-        <>
-        <DownloadDoc documentContent = {generateGeneralInfo() + generateHeadersSpec() + generateCode()}/>
-        </>
+        <div>
+            <DownloadDoc documentContent={allCode}/>
+        </div>
     );
 };
