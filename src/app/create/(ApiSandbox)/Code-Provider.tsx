@@ -19,30 +19,33 @@ export default function CodeProvider() {
             inputHeaders += `'${i}' : '${currRequest.headers[i]}',\n\t\t\t\t`;
         }
         const javascriptCode = `
-const url = '${currRequest.url}';
-const headers = new Headers({
-${inputHeaders}
-});
+  import fetch from 'node-fetch';
 
-fetch(url, {
-method: '${currRequest.httpMethod}',
-headers: headers
-})
-.then(response => {
-    if (!response.ok) {
-    throw new Error("Error");
-    }
-    return response.text();
-})
-.then(data => {
-    console.log(data); // This will log the response data to the console
-})
-.catch(error => {
-    console.error('Fetch error:', error);
-});
-\n`;
-        return javascriptCode;
-    }
+    const url = '${currRequest.url}';
+    
+    const headers = ${inputHeaders};
+    
+    fetch(url, {
+        method: '${currRequest.httpMethod},
+        headers,
+    })
+        .then((response) => {
+        if (!response.ok) {
+            throw new Error('Error');
+        }
+        return response.text();
+        })
+        .then((data) => {
+            console.log(data); // This will log the response data to the console
+        })
+        .catch((error) => {
+            console.error('Fetch error:', error);
+        });
+                
+`;
+
+    return javascriptCode;
+}
 
     function getPython(): string {
         var inputHeaders = "";
@@ -56,9 +59,7 @@ import requests
 def make_http_request():
     url = "${currRequest.url}"
     headers = {
-        ${inputHeaders}
-    }
-    
+        ${inputHeaders}}   
     response = requests.get(url, headers=headers)
     
     response_content = response.text

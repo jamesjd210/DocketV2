@@ -52,8 +52,8 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
 ## Calling the API:
 \`\`\`>${currentApiForm.apiCurl}\`\`\`\n\n
 <details><summary>Python</summary><br><pre><code>${pythonString}</code></pre></details>\n
-<details><summary>Javascript</summary><br><pre><code>${javascriptString}</code></pre></details>\n
 <details><summary>Java</summary><br><pre><code>${javaString}</code></pre></details>\n
+<details><summary>Javascript</summary><br><pre><code>${javascriptString}</code></pre></details>\n
 ## Output:
 \`\`\`
 ${JSON.stringify(docketObject.response,null, 4)}
