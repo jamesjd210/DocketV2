@@ -129,7 +129,7 @@ export default function ApiSandbox() {
         <div className="flex flex-col items-center mt-40">
             {/* Input boxes for users to put in headers*/}
             <div className="mb-10">
-                <p className="text-xl font-semibold">Curl Command:</p> {/* Add appropriate text styling */}
+                <p className="text-xl font-semibold">Curl Command:</p> 
                 <div className="text-gray-300">
                     {docketObject.currApiForm.apiCurl}
                 </div>

@@ -1,4 +1,4 @@
-import { ApiRequest } from '@/models/ApiRequest.model';
+
 import { useDocketObject } from '@/create/DocketDataProvider';
 import React, { useState } from 'react';
 import { CodeLanguages } from '@/models/CodeLanguages.model';
@@ -19,27 +19,28 @@ export default function CodeProvider() {
             inputHeaders += `'${i}' : '${currRequest.headers[i]}',\n\t\t\t\t`;
         }
         const javascriptCode = `
-        const url = '${currRequest.url}';
-        const headers = new Headers({
-        ${inputHeaders}
-        });
+const url = '${currRequest.url}';
+const headers = new Headers({
+${inputHeaders}
+});
 
-        fetch(url, {
-        method: '${currRequest.httpMethod}',
-        headers: headers
-        })
-        .then(response => {
-            if (!response.ok) {
-            throw new Error("Error");
-            }
-            return response.text();
-        })
-        .then(data => {
-            console.log(data); // This will log the response data to the console
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });\n`;
+fetch(url, {
+method: '${currRequest.httpMethod}',
+headers: headers
+})
+.then(response => {
+    if (!response.ok) {
+    throw new Error("Error");
+    }
+    return response.text();
+})
+.then(data => {
+    console.log(data); // This will log the response data to the console
+})
+.catch(error => {
+    console.error('Fetch error:', error);
+});
+\n`;
         return javascriptCode;
     }
 
@@ -50,22 +51,23 @@ export default function CodeProvider() {
         }
 
         const pythonCode = `
-        import requests 
+import requests 
 
-        def make_http_request():
-            url = "${currRequest.url}"
-            headers = {
-                ${inputHeaders}
-            }
-            
-            response = requests.get(url, headers=headers)
-            
-            response_content = response.text
-            status_code = response.status_code
-            
-            print("Response Content:")
-            print(response_content)
-        make_http_request()\n`;
+def make_http_request():
+    url = "${currRequest.url}"
+    headers = {
+        ${inputHeaders}
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    response_content = response.text
+    status_code = response.status_code
+    
+    print("Response Content:")
+    print(response_content)
+make_http_request()
+\n`;
         return pythonCode;
     }
 
@@ -76,51 +78,52 @@ export default function CodeProvider() {
         }
 
         const javaCode = `
-        import java.io.BufferedReader;
-        import java.io.InputStreamReader;
-        import java.net.HttpURLConnection;
-        import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-        public class HttpClientExample {
-            public static void main(String[] args) {
-                try {
-                    // Define the URL
-                    URL url = new URL("${currRequest.url}");
+public class HttpClientExample {
+    public static void main(String[] args) {
+        try {
+            // Define the URL
+            URL url = new URL("${currRequest.url}");
 
-                    // Open a connection to the URL
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                    // Set the request method to ${currRequest.httpMethod}
-                    connection.setRequestMethod("${currRequest.httpMethod}");
+            // Set the request method to ${currRequest.httpMethod}
+            connection.setRequestMethod("${currRequest.httpMethod}");
 
-                    // Set custom headers
-                    ${inputHeaders}
+            // Set custom headers
+            ${inputHeaders}
 
-                    // Get the response code
-                    int responseCode = connection.getResponseCode();
-                    System.out.println("Response Code: " + responseCode);
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
 
-                    // Read the response content
-                    BufferedReader reader = new BufferedReader
-                      (new InputStreamReader(connection.getInputStream()));
-                    String line;
-                    StringBuffer response = new StringBuffer();
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
-                    reader.close();
-
-                    // Print the response content
-                    System.out.println("Response Content:");
-                    System.out.println(response.toString());
-
-                    // Close the connection
-                    connection.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            // Read the response content
+            BufferedReader reader = new BufferedReader
+                (new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
             }
-        }\n`;
+            reader.close();
+
+            // Print the response content
+            System.out.println("Response Content:");
+            System.out.println(response.toString());
+
+            // Close the connection
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+\n`;
         return javaCode;
     }
 
@@ -167,8 +170,6 @@ export default function CodeProvider() {
         case 'java':
             codeExample = <p className = "whitespace-pre">{ javaCode } </p>;
     }
-    //Sandbox has loaded all needed contents for docs
-    docketObject.sandboxFullyRenderedFlag = true;
     return (
         <pre className = "text-black bg-gray-100 p-5 rounded shadow">
             {codeSelector}
