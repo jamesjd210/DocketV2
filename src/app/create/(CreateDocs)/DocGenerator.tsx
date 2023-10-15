@@ -59,7 +59,6 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
 ${JSON.stringify(docketObject.response,null, 4)}
 \`\`\`
 `
-        console.log(codeStringBuilder);
         return codeStringBuilder;
     }
 

@@ -31,7 +31,7 @@ export default function ApiSandbox() {
                 body : JSON.stringify(newData),
             }
         }
-        fetch('/api/callapi', requestOptions)
+        fetch(currRequest.url, requestOptions)
             .then((response : Response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -40,8 +40,9 @@ export default function ApiSandbox() {
             })
             .then((response : Response) => {
                 // Handle the successful response data
+                console.log(response);
                 const contentType = response.headers.get('Content-Type');
-                if (contentType?.includes('application/json')) {
+                if (contentType?.includes('json')) {
                     return response.json();
                 } else {
                     return response.text();
@@ -160,7 +161,9 @@ export default function ApiSandbox() {
                 {apiResponseJson !== null ? (
                     <>
                         <div className="mb-8">
-                            <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
+                            <pre className="text-black bg-gray-100 p-5 rounded shadow" style={{ whiteSpace: 'pre-wrap' }}>
+                                {JSON.stringify(apiResponseJson, null, 4)}
+                            </pre>
                         </div>
                         <div>
                             <CodeProvider/>  
