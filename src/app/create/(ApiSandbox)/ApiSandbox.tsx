@@ -31,7 +31,7 @@ export default function ApiSandbox() {
                 body : JSON.stringify(newData),
             }
         }
-        fetch(currRequest.url, requestOptions)
+        fetch('/api/callapi', requestOptions)
             .then((response : Response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
