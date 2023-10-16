@@ -5,7 +5,6 @@ export default function DocGenerator() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
     const currentApiForm = docketObject.currApiForm;
     const currentApiRequest = docketObject.currApiRequest;
-    
     function generateGeneralInfo() : string {
         const generalInfo = 
 `# ${currentApiForm.apiName} Documentation and Sandbox
@@ -56,7 +55,7 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
 <details><summary>Javascript</summary><br><pre><code>${javascriptString}</code></pre></details>\n
 ## Output:
 \`\`\`
-${JSON.stringify(docketObject.response,null, 4)}
+${JSON.stringify(docketObject.response, null, 4)}
 \`\`\`
 `
         return codeStringBuilder;
