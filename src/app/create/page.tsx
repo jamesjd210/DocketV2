@@ -56,6 +56,7 @@ export default function Page() {
             headers : getHeaders(),
             data : getData(),
         });
+        docketObject.user = formData.developerEmail;
     }
 
     //Make sure the DocketObject only has the most recent data
