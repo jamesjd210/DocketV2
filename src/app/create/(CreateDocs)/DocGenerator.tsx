@@ -1,5 +1,6 @@
 import { useDocketObject } from '@/create/DocketDataProvider';
 import DownloadDoc from '@/create/(CreateDocs)/DownloadDoc';
+import ConvertEnv from '@/create/(CreateDocs)/Convert';
 
 export default function DocGenerator() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
@@ -66,6 +67,9 @@ ${JSON.stringify(docketObject.response, null, 4)}
     return (
         <div>
             <DownloadDoc documentContent={allCode}/>
+            <ConvertEnv/>
         </div>
     );
+
+
 };
