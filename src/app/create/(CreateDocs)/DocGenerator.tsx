@@ -1,11 +1,11 @@
 import { useDocketObject } from '@/create/DocketDataProvider';
 import DownloadDoc from '@/create/(CreateDocs)/DownloadDoc';
+import SaveDocket from '@/create/(CreateDocs)/SaveDocket';
 
 export default function DocGenerator() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
     const currentApiForm = docketObject.currApiForm;
     const currentApiRequest = docketObject.currApiRequest;
-    
     function generateGeneralInfo() : string {
         const generalInfo = 
 `# ${currentApiForm.apiName} Documentation and Sandbox
@@ -56,18 +56,19 @@ of the Api, including a functional sandbox, header descriptions, curl commands a
 <details><summary>Javascript</summary><br><pre><code>${javascriptString}</code></pre></details>\n
 ## Output:
 \`\`\`
-${JSON.stringify(docketObject.response,null, 4)}
+${JSON.stringify(docketObject.response, null, 4)}
 \`\`\`
 `
-        console.log(codeStringBuilder);
         return codeStringBuilder;
     }
 
     const allCode = generateGeneralInfo() + generateHeadersSpec() + generateCode();
 
     return (
-        <div>
+        <div className = "px-5">
             <DownloadDoc documentContent={allCode}/>
+            
+            <SaveDocket/>
         </div>
     );
 };

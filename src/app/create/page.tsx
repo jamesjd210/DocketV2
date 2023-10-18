@@ -56,6 +56,7 @@ export default function Page() {
             headers : getHeaders(),
             data : getData(),
         });
+        docketObject.user = formData.developerEmail;
     }
 
     //Make sure the DocketObject only has the most recent data
@@ -176,7 +177,7 @@ export default function Page() {
             <form id="user-form" method="post" onSubmit={handleSubmit} className = ""> { formFields } </form>
             <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer mx-auto mt-10"
+            className="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer mx-auto mt-10"
             form="user-form"
             >
             Create Sandbox

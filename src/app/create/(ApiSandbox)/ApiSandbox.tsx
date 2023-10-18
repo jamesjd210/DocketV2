@@ -41,7 +41,7 @@ export default function ApiSandbox() {
             .then((response : Response) => {
                 // Handle the successful response data
                 const contentType = response.headers.get('Content-Type');
-                if (contentType?.includes('application/json')) {
+                if (contentType?.includes('json')) {
                     return response.json();
                 } else {
                     return response.text();
@@ -130,7 +130,7 @@ export default function ApiSandbox() {
             {/* Input boxes for users to put in headers*/}
             <div className="mb-10">
                 <p className="text-xl font-semibold">Curl Command:</p> 
-                <div className="text-gray-300">
+                <div className="text-gray-800">
                     {docketObject.currApiForm.apiCurl}
                 </div>
             </div>
@@ -149,10 +149,17 @@ export default function ApiSandbox() {
             {/* Execute button */}
             <button
                 type="button"
-                className="bg-gray-500 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
+                className="bg-blue-800 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
                 onClick={handleButtonClick}
             >
                 Execute
+            </button>
+            <button
+                type="button"
+                className="bg-blue-800 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
+                onClick={() => {window.location.reload();}}
+            >
+                Start Over
             </button>
         
             {/* API response */}
@@ -160,7 +167,9 @@ export default function ApiSandbox() {
                 {apiResponseJson !== null ? (
                     <>
                         <div className="mb-8">
-                            <pre className="text-black bg-gray-100 p-5 rounded shadow">{JSON.stringify(apiResponseJson, null, 4)}</pre>
+                            <pre className="text-black bg-gray-100 p-5 rounded shadow" style={{ whiteSpace: 'pre-wrap' }}>
+                                {JSON.stringify(apiResponseJson, null, 4)}
+                            </pre>
                         </div>
                         <div>
                             <CodeProvider/>  
