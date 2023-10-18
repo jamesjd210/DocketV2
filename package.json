@@ -14,12 +14,13 @@
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
     "aos": "^3.0.0-beta.6",
+    "dotenv": "^16.3.1",
     "next": "^13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-modal-video": "^2.0.1",
     "react-youtube": "^10.1.0",
-    "typescript": "5.2.2"
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",

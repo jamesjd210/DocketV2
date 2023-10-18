@@ -1,5 +1,6 @@
 import { useDocketObject } from '@/create/DocketDataProvider';
 import DownloadDoc from '@/create/(CreateDocs)/DownloadDoc';
+import SaveDocket from '@/create/(CreateDocs)/SaveDocket';
 
 export default function DocGenerator() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
@@ -64,8 +65,10 @@ ${JSON.stringify(docketObject.response, null, 4)}
     const allCode = generateGeneralInfo() + generateHeadersSpec() + generateCode();
 
     return (
-        <div>
+        <div className = "px-5">
             <DownloadDoc documentContent={allCode}/>
+            
+            <SaveDocket/>
         </div>
     );
 };
