@@ -6,7 +6,7 @@ export default function SaveDocket() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
     const [saveDocketResponse, setSaveDocketResponse] = useState<string | null>(null);
     const docketObjectToSend : DocketObject= {
-        user : docketObject.user,
+        companyName : docketObject.companyName,
         currApiForm : docketObject.currApiForm,
         currApiRequest : docketObject.currApiRequest,
         codeTranslations : docketObject.codeTranslations,
