@@ -4,6 +4,8 @@ import { DocketObject } from '@/models/DocketObject.model';
 export default function Page() {
     const [companyName, setCompanyName] = useState<string>("");
     const [submitClicked, setSubmitClicked] = useState<boolean>(false);
+    const [docketObjects, setDocketObjects] = useState<DocketObject[]>();
+
     function handleInputChange(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.currentTarget;
         setCompanyName(value);
@@ -17,7 +19,7 @@ export default function Page() {
             headers : {'api-key': apiKey},
         }
         try {
-            const response = await fetch ("http://localhost:8081/docket");
+            const response = await fetch ("http://localhost:8081/docket", requestOptions);
             if(!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -33,13 +35,10 @@ export default function Page() {
         setSubmitClicked(true);
         try {
             const docketObjects = await getDocketObjects();
-            console.log(docketObjects);
-            // Use the fetched data in your component
         } catch (error) {
-        console.error(error);
+            throw new Error('Error getting the data');
         }
-
-        
+        setDocketObjects(docketObjects);  
     }
     if(!submitClicked) {
         return (

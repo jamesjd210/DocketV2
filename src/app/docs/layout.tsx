@@ -1,5 +1,5 @@
 import React from 'react'
-import { DocketDataProvider } from '@/create/DocketDataProvider'
+import { DocketDataProvider } from '@/docs/DocketDataProvider'
 
 export default function CreateDocsLayout({
     children, // will be a page or nested layout

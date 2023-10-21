@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDocketObject } from '@/create/DocketDataProvider';
+import { useDocketObject } from '@/docs/DocketDataProvider';
 import { DocketObject } from '@/models/DocketObject.model';
 
 export default function SaveDocket() {
