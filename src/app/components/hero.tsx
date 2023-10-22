@@ -1,5 +1,6 @@
 import VideoThumb from '@/../public/images/thumbnail.png'
 import ModalVideo from '@/components/modal-video'
+import Link from 'next/link'
 
 export default function Hero() {
   return (
@@ -28,11 +29,11 @@ export default function Hero() {
             <p className="text-xl text-gray-800 mb-8" data-aos="fade-up" data-aos-delay="200">Welcome to enterprise level documentation in 60 seconds.</p>
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
               <div data-aos="fade-up" data-aos-delay="400">
-                <a className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0" href="https://autodocs.streamlit.app/" target="_blank">Try Now</a>
+                <a className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0" href="https://autodocs.streamlit.app/" target="_blank">Try Version 1</a>
               </div>
-              {/* <div data-aos="fade-up" data-aos-delay="600">
-                <a className="btn text-white bg-gray-700 hover:bg-gray-800 w-full sm:w-auto sm:ml-4" href="#0">Learn more</a>
-              </div> */}
+              <div data-aos="fade-up" data-aos-delay="600">
+                <Link className="btn text-white bg-gray-700 hover:bg-gray-800 w-full sm:w-auto sm:ml-4" href="/docs">Try Version 2</Link>
+              </div>
             </div>
           </div>
 

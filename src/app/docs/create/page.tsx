@@ -2,10 +2,10 @@
 import React, { useState, SyntheticEvent, useEffect } from 'react';
 import { ApiForm } from '@/models/ApiForm.model'
 import { ApiRequest } from '@/models/ApiRequest.model';
-import ApiSandbox from '@/create/(ApiSandbox)/ApiSandbox';
+import ApiSandbox from '@/docs/create/(ApiSandbox)/ApiSandbox';
 import DocGenerator from './(CreateDocs)/DocGenerator';
 import { HTTP_METHOD, HTTP_METHODS } from 'next/dist/server/web/http';
-import { useDocketObject } from './DocketDataProvider';
+import { useDocketObject } from '../DocketDataProvider';
 
 export default function Page() {
 
@@ -56,7 +56,7 @@ export default function Page() {
             headers : getHeaders(),
             data : getData(),
         });
-        docketObject.user = formData.developerEmail;
+        docketObject.companyName = formData.companyName;
     }
 
     //Make sure the DocketObject only has the most recent data

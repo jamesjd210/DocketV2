@@ -1,8 +1,8 @@
 import React, { useState, SyntheticEvent, useEffect } from 'react';
 import CodeProvider from './Code-Provider';
 import { HTTP_METHODS } from 'next/dist/server/web/http';
-import { useDocketObject } from '@/create/DocketDataProvider';
-import DocGenerator from '@/create/(CreateDocs)/DocGenerator';
+import { useDocketObject } from '@/docs/DocketDataProvider';
+import DocGenerator from '@/docs/create/(CreateDocs)/DocGenerator';
 
 
 export default function ApiSandbox() {

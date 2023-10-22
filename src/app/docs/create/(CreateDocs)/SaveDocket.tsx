@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useDocketObject } from '@/create/DocketDataProvider';
+import { useDocketObject } from '@/docs/DocketDataProvider';
 import { DocketObject } from '@/models/DocketObject.model';
 
 export default function SaveDocket() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();
     const [saveDocketResponse, setSaveDocketResponse] = useState<string | null>(null);
     const docketObjectToSend : DocketObject= {
-        user : docketObject.user,
+        companyName : docketObject.companyName,
         currApiForm : docketObject.currApiForm,
         currApiRequest : docketObject.currApiRequest,
         codeTranslations : docketObject.codeTranslations,

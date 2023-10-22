@@ -1,5 +1,5 @@
 
-import { useDocketObject } from '@/create/DocketDataProvider';
+import { useDocketObject } from '@/docs/DocketDataProvider';
 import React, { useState } from 'react';
 import { CodeLanguages } from '@/models/CodeLanguages.model';
 

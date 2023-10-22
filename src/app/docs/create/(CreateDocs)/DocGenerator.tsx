@@ -1,6 +1,6 @@
-import { useDocketObject } from '@/create/DocketDataProvider';
-import DownloadDoc from '@/create/(CreateDocs)/DownloadDoc';
-import SaveDocket from '@/create/(CreateDocs)/SaveDocket';
+import { useDocketObject } from '@/docs/DocketDataProvider';
+import DownloadDoc from '@/docs/create/(CreateDocs)/DownloadDoc';
+import SaveDocket from '@/docs/create/(CreateDocs)/SaveDocket';
 
 export default function DocGenerator() {
     const { docketObject , handleUpdateDocketObject } = useDocketObject();

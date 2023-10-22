@@ -50,7 +50,7 @@ export function DocketDataProvider({children,} : {children: React.ReactNode}) {
         data: {},
     };
     const [docketObject, setDocketObject] = useState<DocketObject>({
-        user : "",
+        companyName : "",
         currApiForm : defaultApiForm,
         currApiRequest : defaultApiRequest,
         codeTranslations : defaultCodeTranslations,
