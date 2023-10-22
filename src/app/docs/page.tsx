@@ -1,76 +1,20 @@
-'use client'
-import React, { useState, SyntheticEvent, useEffect } from 'react';
-import { DocketObject } from '@/models/DocketObject.model';
-export default function Page() {
-    const [companyName, setCompanyName] = useState<string>("");
-    const [submitClicked, setSubmitClicked] = useState<boolean>(false);
-    const [docketObjects, setDocketObjects] = useState<DocketObject[]>();
+import Link from 'next/link'
 
-    function handleInputChange(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const { name, value } = e.currentTarget;
-        setCompanyName(value);
-    }
+export default function Docs() {
 
-    async function getDocketObjects() : Promise<DocketObject[]> {
-        const apiKey = process.env.NEXT_PUBLIC_API_KEY!
-        console.log(apiKey);
-        const requestOptions = {
-            method : "GET",
-            headers : {'api-key': apiKey},
-        }
-        try {
-            const response = await fetch ("http://localhost:8081/docket", requestOptions);
-            if(!response.ok) {
-                throw new Error('Network response was not ok');
-            }
 
-            const data : DocketObject[] = await response.json();
-            return data
-        } catch (error : any) {
-            throw new Error('Error fetching data from API: ' + error.message);
-        } 
-    }
-
-    async function handleClick(){
-        setSubmitClicked(true);
-        try {
-            const docketObjects = await getDocketObjects();
-        } catch (error) {
-            throw new Error('Error getting the data');
-        }
-        setDocketObjects(docketObjects);  
-    }
-    if(!submitClicked) {
-        return (
-            <div className = "flex flex-col items-center max-w-lg mx-auto mt-20">
-                <div>
-                    <label className="text-sm font-bold mb-2 w-full mr-5">
-                        Enter in Company Name:
-                    </label>
-                    <input
-                    type="text"
-                    name="companyNameBox"
-                    placeholder=""
-                    onChange={handleInputChange}
-                    className="block text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
-                    />
-
-                </div>
-                <div>
-                    <button
-                        type="submit"
-                        className="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer mx-auto mt-2"
-                        form="user-form"
-                        onClick={handleClick}
-                        >
-                        Fetch Data
-                    </button>
-                </div>
-            </div>
-        );
-    } else {
-        return (
-            <>h9i</>
-        );
-    }
+    return (
+    <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16 mt-20">
+        <h1 className="h1 mb-4" data-aos="fade-up">Docket</h1>
+        <p className="text-xl text-gray-800 mb-8" data-aos="fade-up" data-aos-delay="200">Try out Docket now!</p>
+        <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
+          <div data-aos="fade-up" data-aos-delay="400">
+            <Link className="btn text-white bg-blue-600 hover:bg-blue-700 w-full sm:w-auto sm:ml-4" href="/docs/create">Create Docket</Link>
+          </div>
+          <div data-aos="fade-up" data-aos-delay="600">
+            <Link className="btn text-white bg-gray-700 hover:bg-gray-800 w-full sm:w-auto sm:ml-4" href="/docs/retrieve">View Dockets</Link>
+          </div>
+        </div>
+      </div>
+    );
 }
