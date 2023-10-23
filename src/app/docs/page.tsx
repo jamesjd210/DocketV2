@@ -1,8 +1,6 @@
 import Link from 'next/link'
 
 export default function Docs() {
-
-
     return (
     <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16 mt-20">
         <h1 className="h1 mb-4" data-aos="fade-up">Docket</h1>

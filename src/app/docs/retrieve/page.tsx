@@ -13,18 +13,18 @@ export default function Page() {
 
     async function getDocketObjects() : Promise<DocketObject[]> {
         const apiKey = process.env.NEXT_PUBLIC_API_KEY!
-        console.log(apiKey);
         const requestOptions = {
             method : "GET",
-            headers : {'api-key': apiKey},
+            headers : {'api-key': apiKey, 'company-name' : companyName},
         }
         try {
-            const response = await fetch ("http://localhost:8081/docket", requestOptions);
+            const response = await fetch ("http://localhost:8081/docket/", requestOptions);
             if(!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
             const data : DocketObject[] = await response.json();
+            console.log(data);
             return data
         } catch (error : any) {
             throw new Error('Error fetching data from API: ' + error.message);
