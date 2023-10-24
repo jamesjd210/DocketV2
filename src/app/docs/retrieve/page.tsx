@@ -3,24 +3,34 @@ import React, { useState, SyntheticEvent, useEffect } from 'react';
 import { DocketObject } from '@/models/DocketObject.model';
 export default function Page() {
     const [companyName, setCompanyName] = useState<string>("");
+    const [apiKey, setApiKey] = useState<string>("");
     const [submitClicked, setSubmitClicked] = useState<boolean>(false);
     const [docketObjects, setDocketObjects] = useState<DocketObject[]>();
 
     function handleInputChange(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.currentTarget;
-        setCompanyName(value);
+
+        if (name === 'companyNameBox') {
+            setCompanyName(value);
+        } else if (name === 'apiKeyBox') {
+            setApiKey(value);
+        }
     }
 
     async function getDocketObjects() : Promise<DocketObject[]> {
-        const apiKey = process.env.NEXT_PUBLIC_API_KEY!
+        const apiUrl = process.env.NEXT_PUBLIC_DOCKET_API!;
         const requestOptions = {
             method : "GET",
             headers : {'api-key': apiKey, 'company-name' : companyName},
         }
         try {
-            const response = await fetch ("http://localhost:8081/docket/", requestOptions);
+            const response = await fetch (apiUrl, requestOptions);
             if(!response.ok) {
-                throw new Error('Network response was not ok');
+                if(response.status == 401) {
+                    console.log(response.body)
+                } else {
+                    throw new Error("Error connecting to API");
+                }
             }
 
             const data : DocketObject[] = await response.json();
@@ -34,11 +44,11 @@ export default function Page() {
     async function handleClick(){
         setSubmitClicked(true);
         try {
-            const docketObjects = await getDocketObjects();
-        } catch (error) {
-            throw new Error('Error getting the data');
-        }
-        setDocketObjects(docketObjects);  
+            const docketObjectsFromDb = await getDocketObjects();
+            setDocketObjects(docketObjectsFromDb);
+        } catch (error : any) {
+            throw new Error('Error getting the data ' + error.message);
+        }  
     }
     if(!submitClicked) {
         return (
@@ -57,6 +67,18 @@ export default function Page() {
 
                 </div>
                 <div>
+                    <label className="text-sm font-bold mb-2 w-full mr-5">
+                        Enter in Api-Key:
+                    </label>
+                    <input
+                    type="text"
+                    name="apiKeyBox"
+                    placeholder=""
+                    onChange={handleInputChange}
+                    className="block text-black w-64 p-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    />
+                </div>
+                <div>
                     <button
                         type="submit"
                         className="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-700 cursor-pointer mx-auto mt-2"
@@ -70,7 +92,9 @@ export default function Page() {
         );
     } else {
         return (
-            <>h9i</>
+            <div className = "flex flex-col items-center max-w-lg mx-auto mt-20">
+                {JSON.stringify(docketObjects)}
+            </div>
         );
     }
 }
