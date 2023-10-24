@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, SyntheticEvent, useEffect } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import { DocketObject } from '@/models/DocketObject.model';
 export default function Page() {
     const [companyName, setCompanyName] = useState<string>("");
