@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent, useEffect } from 'react';
+import React, { useState } from 'react';
 import CodeProvider from './Code-Provider';
 import { HTTP_METHODS } from 'next/dist/server/web/http';
 import { useDocketObject } from '@/docs/DocketDataProvider';
