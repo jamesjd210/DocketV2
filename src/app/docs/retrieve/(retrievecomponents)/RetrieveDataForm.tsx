@@ -8,7 +8,6 @@ export default function RetriveDataForm () {
     const [companyName, setCompanyName] = useState<string>("");
     const [apiKey, setApiKey] = useState<string>("");
     const [submitClicked, setSubmitClicked] = useState<boolean>(false);
-    const [docketObjects, setDocketObjects] = useState<DocketObject[]>([]);
 
     const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
 
@@ -47,10 +46,9 @@ export default function RetriveDataForm () {
 
     async function handleClick(){
         setSubmitClicked(true);
-        handleUpdateUserDocsData(userDocsData.currEndpoint, true, userDocsData.currDocketObjects);
         try {
             const docketObjectsFromDb = await getDocketObjects();
-            setDocketObjects(docketObjectsFromDb);
+            handleUpdateUserDocsData(userDocsData.currEndpoint, true, docketObjectsFromDb);
             console.log(docketObjectsFromDb);
             console.log(userDocsData);
 

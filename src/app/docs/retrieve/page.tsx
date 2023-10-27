@@ -16,7 +16,7 @@ export default function Page() {
             <div className="w-full mx-auto mt-20 flex justify-between">
                 <div className="w-1/3">
                     {/* Content for the first column */}
-                    testslf;dsjfs;a
+                    <DynamicNavbar/>
                 </div>
                 <div className="w-1/3">
                     {/* Content for the second column */}

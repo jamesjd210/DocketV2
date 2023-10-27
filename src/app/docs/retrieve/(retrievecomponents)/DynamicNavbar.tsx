@@ -8,9 +8,9 @@ export default function DynamicNavbar() {
   return (
     <nav className="text-left">
       <ul>
-        {userDocsData.currDocketObjects.map((docket: DocketObject, index: number) => (
-          <li key={index}>
-            <a>Testacsdasdc</a>
+        {userDocsData.currDocketObjects.map((currDocketObject: DocketObject) => (
+          <li key={currDocketObject._id}>
+            <a>{currDocketObject.currApiRequest.url}</a>
           </li>
         ))}
       </ul>
