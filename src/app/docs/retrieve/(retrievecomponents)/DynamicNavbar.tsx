@@ -1,15 +1,14 @@
 import { DocketObject } from '@/models/DocketObject.model';
+import { useUserDocsData } from '@/docs/retrieve/UserDocsDataProvider';
 import Link from 'next/link';
 
-interface DynamicNavbarProps {
-  docketObjects: DocketObject[];
-}
 
-export default function DynamicNavbar(props: DynamicNavbarProps) {
+export default function DynamicNavbar() {
+  const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
   return (
     <nav className="text-left">
       <ul>
-        {props.docketObjects.map((docket: DocketObject, index: number) => (
+        {userDocsData.currDocketObjects.map((docket: DocketObject, index: number) => (
           <li key={index}>
             <a>Testacsdasdc</a>
           </li>
