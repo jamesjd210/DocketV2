@@ -1,20 +1,26 @@
 import { DocketObject } from '@/models/DocketObject.model';
 import { useUserDocsData } from '@/docs/retrieve/UserDocsDataProvider';
+import { useDocketObject } from '@/docs/DocketDataProvider';
 import React, { useState } from 'react';
 import Link from 'next/link';
 
 
 export default function DynamicNavbar() {
   const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
-
+  const { docketObject , handleUpdateDocketObject, handleUpdateNewDocketObject } = useDocketObject();
+  
   function handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const endpoint = event.target.value;
     handleUpdateUserDocsData(endpoint, userDocsData.currSubmitStatus, userDocsData.currDocketObjects);
-
+    const selectedDocket = userDocsData.currDocketObjects.find(docket => docket.currApiRequest.httpMethod + " " + docket.currApiRequest.url === endpoint);
+    if (selectedDocket) {
+      handleUpdateNewDocketObject(selectedDocket);
+    }
+    console.log(selectedDocket);
   }
-
+  
   const endpointOptions = userDocsData.currDocketObjects.map((currDocketObject) => (
-    <option key={currDocketObject.currApiRequest.url} value={currDocketObject.currApiRequest.url} className="py-2">
+    <option key={currDocketObject._id} value={currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url} className="py-2">
       {currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url}
     </option>
   ));

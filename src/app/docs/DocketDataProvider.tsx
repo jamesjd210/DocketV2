@@ -11,6 +11,9 @@ interface DocketDataContextProps {
     handleUpdateDocketObject : (    
         currApiForm : ApiForm,
         currApiRequest : ApiRequest) => void;
+    handleUpdateNewDocketObject : (
+        newDocket : DocketObject
+    ) => void;
 }
 
 const DocketDataContext = createContext<DocketDataContextProps | undefined>(undefined);
@@ -66,9 +69,13 @@ export function DocketDataProvider({children,} : {children: React.ReactNode}) {
         }));
     }
 
+    function handleUpdateNewDocketObject (newDockObject : DocketObject) {
+        setDocketObject(newDockObject)
+    }
+
     return (
             <DocketDataContext.Provider
-            value = {{ docketObject, handleUpdateDocketObject }}>
+            value = {{ docketObject, handleUpdateDocketObject, handleUpdateNewDocketObject}}>
                 {children}
             </DocketDataContext.Provider>
     );

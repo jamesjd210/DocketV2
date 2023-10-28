@@ -1,6 +1,7 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { DocketObject } from '@/models/DocketObject.model';
 import { useUserDocsData } from '@/docs/retrieve/UserDocsDataProvider';
+import { useDocketObject } from '@/docs/DocketDataProvider';
 import Link from 'next/link';
 
 export default function RetriveDataForm () {
@@ -10,6 +11,7 @@ export default function RetriveDataForm () {
     const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
     const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
+    const { docketObject , handleUpdateDocketObject, handleUpdateNewDocketObject } = useDocketObject();
 
     function handleInputChange(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.currentTarget;
@@ -49,8 +51,9 @@ export default function RetriveDataForm () {
         try {
             const docketObjectsFromDb = await getDocketObjects();
             handleUpdateUserDocsData(userDocsData.currEndpoint, true, docketObjectsFromDb);
-            console.log(docketObjectsFromDb);
-            console.log(userDocsData);
+            if(docketObjectsFromDb.length > 0) {
+                handleUpdateNewDocketObject(docketObjectsFromDb[0]);
+            }
 
         } catch (error : any) {
             throw new Error('Error getting the data ' + error.message);
