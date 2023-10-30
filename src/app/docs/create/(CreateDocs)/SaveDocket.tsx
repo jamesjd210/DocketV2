@@ -7,6 +7,7 @@ export default function SaveDocket() {
     const [saveDocketResponse, setSaveDocketResponse] = useState<string | null>(null);
     const [apiKey, setApiKey] = useState<string>("");
     const docketObjectToSend : DocketObject= {
+        _id : docketObject._id,
         companyName : docketObject.companyName,
         currApiForm : docketObject.currApiForm,
         currApiRequest : docketObject.currApiRequest,

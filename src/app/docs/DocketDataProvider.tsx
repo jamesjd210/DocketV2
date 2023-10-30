@@ -7,7 +7,11 @@ import {  HTTP_METHODS } from 'next/dist/server/web/http';
 import { createContext, useContext, useState } from 'react';
 
 interface DocketDataContextProps {
-    docketObject : DocketObject;
+    docketObject : DocketObject,
+    sandboxMode : number,
+    handleUpdateSandboxMode : (
+        currSandboxMode : number
+    ) => void
     handleUpdateDocketObject : (    
         currApiForm : ApiForm,
         currApiRequest : ApiRequest) => void;
@@ -15,6 +19,10 @@ interface DocketDataContextProps {
         newDocket : DocketObject
     ) => void;
 }
+
+
+//sandboxMode 0 is for create
+//sandboxMode 1 is for retrieve
 
 const DocketDataContext = createContext<DocketDataContextProps | undefined>(undefined);
 
@@ -60,6 +68,8 @@ export function DocketDataProvider({children,} : {children: React.ReactNode}) {
         codeTranslations : defaultCodeTranslations,
         response : null,
     });
+
+    const [sandboxMode, setSandboxMode] = useState<number>(0);
     
     function handleUpdateDocketObject (newApiForm : ApiForm, newApiRequest : ApiRequest) {
         setDocketObject((prevValues) => ({
@@ -73,9 +83,13 @@ export function DocketDataProvider({children,} : {children: React.ReactNode}) {
         setDocketObject(newDockObject)
     }
 
+    function handleUpdateSandboxMode (newSandboxMode : number) {
+        setSandboxMode(newSandboxMode);
+    }
+
     return (
             <DocketDataContext.Provider
-            value = {{ docketObject, handleUpdateDocketObject, handleUpdateNewDocketObject}}>
+            value = {{ docketObject, sandboxMode, handleUpdateDocketObject, handleUpdateNewDocketObject, handleUpdateSandboxMode}}>
                 {children}
             </DocketDataContext.Provider>
     );

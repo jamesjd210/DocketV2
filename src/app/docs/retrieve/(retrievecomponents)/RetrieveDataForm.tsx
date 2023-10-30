@@ -10,7 +10,7 @@ export default function RetriveDataForm () {
     const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
     const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
-    const { docketObject , handleUpdateDocketObject, handleUpdateNewDocketObject } = useDocketObject();
+    const { handleUpdateNewDocketObject, handleUpdateSandboxMode } = useDocketObject();
 
     function handleInputChange(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.currentTarget;
@@ -50,6 +50,7 @@ export default function RetriveDataForm () {
         try {
             const docketObjectsFromDb = await getDocketObjects();
             handleUpdateUserDocsData(userDocsData.currEndpoint, true, docketObjectsFromDb);
+            handleUpdateSandboxMode(1);
             if(docketObjectsFromDb.length > 0) {
                 handleUpdateNewDocketObject(docketObjectsFromDb[0]);
             }

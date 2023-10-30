@@ -28,7 +28,7 @@ export function UserDocsDataProvider({children,} : {children: React.ReactNode}) 
         id : "",
         currEndpoint : "",
         currSubmitStatus : false,
-        currDocketObjects : []
+        currDocketObjects : [],
     });
 
     function handleUpdateUserDocsData (newEnpoint : string, newSubmitStatus : boolean, newDocketObjects : DocketObject[], ) {
