@@ -131,7 +131,9 @@ export default function ApiSandbox() {
             <div className="mb-10">
                 <p className="text-xl font-semibold">Curl Command:</p> 
                 <div className="text-gray-800">
-                    {docketObject.currApiForm.apiCurl}
+                    <pre className="text-black bg-gray-100 p-5 rounded shadow" style={{ whiteSpace: 'pre-wrap' }}>
+                        {docketObject.currApiForm.apiCurl}
+                    </pre>
                 </div>
             </div>
             {inputHeaderBoxes}
