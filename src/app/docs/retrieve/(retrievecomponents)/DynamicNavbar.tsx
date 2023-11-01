@@ -20,7 +20,7 @@ export default function DynamicNavbar() {
   }
   
   const endpointOptions = userDocsData.currDocketObjects.map((currDocketObject) => (
-    <option key={currDocketObject._id} value={currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url} className="py-2">
+    <option value={currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url} className="py-2">
       {currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url}
     </option>
   ));

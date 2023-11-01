@@ -25,7 +25,6 @@ export function useUserDocsData() {
 export function UserDocsDataProvider({children,} : {children: React.ReactNode}) {
     //default values for initial context
     const [userDocsData, setUserDocsData] = useState<UserDocsData>({
-        id : "",
         currEndpoint : "",
         currSubmitStatus : false,
         currDocketObjects : [],
