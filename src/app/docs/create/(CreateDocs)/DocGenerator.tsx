@@ -3,7 +3,7 @@ import DownloadDoc from '@/docs/create/(CreateDocs)/DownloadDoc';
 import SaveDocket from '@/docs/create/(CreateDocs)/SaveDocket';
 
 export default function DocGenerator() {
-    const { docketObject, sandboxMode, handleUpdateDocketObject } = useDocketObject();
+    const { docketObject, sandboxMode, } = useDocketObject();
     const currentApiForm = docketObject.currApiForm;
     const currentApiRequest = docketObject.currApiRequest;
     function generateGeneralInfo() : string {

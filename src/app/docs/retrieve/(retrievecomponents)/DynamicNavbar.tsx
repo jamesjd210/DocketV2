@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function DynamicNavbar() {
   const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
-  const { docketObject , handleUpdateDocketObject, handleUpdateNewDocketObject } = useDocketObject();
+  const { docketObject , handleUpdateNewDocketObject } = useDocketObject();
   
   function handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const endpoint = event.target.value;

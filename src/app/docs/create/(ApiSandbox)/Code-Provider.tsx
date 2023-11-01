@@ -5,7 +5,7 @@ import { CodeLanguages } from '@/models/CodeLanguages.model';
 
 export default function CodeProvider() {
     const [selectedLanguage, setSelectedLanguage] = useState('javascript');
-    const { docketObject, handleUpdateDocketObject } = useDocketObject();
+    const { docketObject } = useDocketObject();
     const currRequest = docketObject.currApiRequest;
     function handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
         const language = event.target.value;

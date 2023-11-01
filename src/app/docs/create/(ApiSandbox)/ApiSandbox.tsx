@@ -7,7 +7,7 @@ import DocGenerator from '@/docs/create/(CreateDocs)/DocGenerator';
 
 export default function ApiSandbox() {
     
-    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const { docketObject } = useDocketObject();
 
     const currRequest = docketObject.currApiRequest;
     const [newHeaders, setNewHeaders] = useState<Record<string, string>>();
