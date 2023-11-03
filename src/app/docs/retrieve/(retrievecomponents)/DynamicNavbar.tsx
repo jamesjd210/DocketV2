@@ -9,7 +9,7 @@ export default function DynamicNavbar() {
   const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
   const { docketObject , handleUpdateNewDocketObject } = useDocketObject();
   
-  function handleLanguageChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  function handleEndpointSelection(event: React.ChangeEvent<HTMLSelectElement>) {
     const endpoint = event.target.value;
     handleUpdateUserDocsData(endpoint, userDocsData.currSubmitStatus, userDocsData.currDocketObjects);
     const selectedDocket = userDocsData.currDocketObjects.find(docket => docket.currApiRequest.httpMethod + " " + docket.currApiRequest.url === endpoint);
@@ -32,7 +32,7 @@ export default function DynamicNavbar() {
             <label className="block text-sm font-medium">Select Endpoint:</label>
             <select
                 value={userDocsData.currEndpoint}
-                onChange={handleLanguageChange}
+                onChange={handleEndpointSelection}
                 className="border p-2 rounded-md bg-white text-black shadow-md focus:outline-none w-80"
             >
             {endpointOptions}

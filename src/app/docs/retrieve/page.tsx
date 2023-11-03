@@ -4,7 +4,7 @@ import DynamicNavbar  from '@/docs/retrieve/(retrievecomponents)/DynamicNavbar';
 import { useUserDocsData } from '@/docs/retrieve/UserDocsDataProvider';
 import ApiSandbox from '@/docs/create/(ApiSandbox)/ApiSandbox';
 export default function Page() {
-    const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
+    const { userDocsData , } = useUserDocsData();
     //if user has not submitted the form
     if (!userDocsData.currSubmitStatus) {
         return (
