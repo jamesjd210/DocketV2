@@ -1,4 +1,3 @@
-import { DocketObject } from '@/models/DocketObject.model';
 import { useUserDocsData } from '@/docs/retrieve/UserDocsDataProvider';
 import { useDocketObject } from '@/docs/DocketDataProvider';
 import React, { useState } from 'react';
@@ -9,8 +8,7 @@ export default function DynamicNavbar() {
   const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
   const { docketObject , handleUpdateNewDocketObject } = useDocketObject();
   
-  function handleEndpointSelection(event: React.ChangeEvent<HTMLSelectElement>) {
-    const endpoint = event.target.value;
+  function handleEndpointSelection(endpoint : string) {
     handleUpdateUserDocsData(endpoint, userDocsData.currSubmitStatus, userDocsData.currDocketObjects);
     const selectedDocket = userDocsData.currDocketObjects.find(docket => docket.currApiRequest.httpMethod + " " + docket.currApiRequest.url === endpoint);
     if (selectedDocket) {
@@ -18,11 +16,14 @@ export default function DynamicNavbar() {
     }
     console.log(selectedDocket);
   }
-  
-  const endpointOptions = userDocsData.currDocketObjects.map((currDocketObject) => (
-    <option value={currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url} className="py-2">
-      {currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url}
-    </option>
+
+  const endpointButtons = userDocsData.currDocketObjects.map((currDocketObject) => (
+    <button
+      value = {currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url} 
+      className = "bg-blue-800 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
+      onClick={() => handleEndpointSelection(currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url)} >
+        {currDocketObject.currApiRequest.httpMethod + " " + currDocketObject.currApiRequest.url}
+    </button>
   ));
 
   const endpointSelector = (
@@ -30,13 +31,7 @@ export default function DynamicNavbar() {
         <h1 className="text-2xl font-bold mb-4">API</h1>
         <div className='mt-4'>
             <label className="block text-sm font-medium">Select Endpoint:</label>
-            <select
-                value={userDocsData.currEndpoint}
-                onChange={handleEndpointSelection}
-                className="border p-2 rounded-md bg-white text-black shadow-md focus:outline-none w-80"
-            >
-            {endpointOptions}
-            </select>
+            <div className="flex flex-wrap">{endpointButtons}</div>
         </div>
     </div>
   );
