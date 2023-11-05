@@ -151,14 +151,14 @@ export default function ApiSandbox() {
             {/* Execute button */}
             <button
                 type="button"
-                className="bg-blue-800 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
+                className="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-900 cursor-pointer mt-4"
                 onClick={handleButtonClick}
             >
                 Execute
             </button>
             <button
                 type="button"
-                className="bg-blue-800 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
+                className="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-900 cursor-pointer mt-4"
                 onClick={() => {window.location.reload();}}
             >
                 Start Over
