@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function DynamicNavbar() {
   const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
-  const { docketObject , handleUpdateNewDocketObject } = useDocketObject();
+  const {  handleUpdateNewDocketObject } = useDocketObject();
   const [selectedEndpoint, setSelectedEndpoint] = useState<string>("");
   
   useEffect(() => {
