@@ -7,7 +7,7 @@ import DocGenerator from '@/docs/create/(CreateDocs)/DocGenerator';
 
 export default function ApiSandbox() {
     
-    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const { docketObject } = useDocketObject();
 
     const currRequest = docketObject.currApiRequest;
     const [newHeaders, setNewHeaders] = useState<Record<string, string>>();
@@ -131,7 +131,9 @@ export default function ApiSandbox() {
             <div className="mb-10">
                 <p className="text-xl font-semibold">Curl Command:</p> 
                 <div className="text-gray-800">
-                    {docketObject.currApiForm.apiCurl}
+                    <pre className="text-black bg-gray-100 p-5 rounded shadow" style={{ whiteSpace: 'pre-wrap' }}>
+                        {docketObject.currApiForm.apiCurl}
+                    </pre>
                 </div>
             </div>
             {inputHeaderBoxes}
@@ -149,14 +151,14 @@ export default function ApiSandbox() {
             {/* Execute button */}
             <button
                 type="button"
-                className="bg-blue-800 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
+                className="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-900 cursor-pointer mt-4"
                 onClick={handleButtonClick}
             >
                 Execute
             </button>
             <button
                 type="button"
-                className="bg-blue-800 text-white py-2 px-4 rounded hover-bg-gray-700 cursor-pointer mt-4"
+                className="bg-blue-800 text-white py-2 px-4 rounded hover:bg-blue-900 cursor-pointer mt-4"
                 onClick={() => {window.location.reload();}}
             >
                 Start Over

@@ -1,16 +1,16 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { DocketObject } from '@/models/DocketObject.model';
 import { useUserDocsData } from '@/docs/retrieve/UserDocsDataProvider';
-import Link from 'next/link';
+import { useDocketObject } from '@/docs/DocketDataProvider';
 
 export default function RetriveDataForm () {
 
     const [companyName, setCompanyName] = useState<string>("");
     const [apiKey, setApiKey] = useState<string>("");
     const [submitClicked, setSubmitClicked] = useState<boolean>(false);
-    const [docketObjects, setDocketObjects] = useState<DocketObject[]>([]);
 
     const { userDocsData , handleUpdateUserDocsData } = useUserDocsData();
+    const { handleUpdateNewDocketObject, handleUpdateSandboxMode } = useDocketObject();
 
     function handleInputChange(e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.currentTarget;
@@ -47,12 +47,13 @@ export default function RetriveDataForm () {
 
     async function handleClick(){
         setSubmitClicked(true);
-        handleUpdateUserDocsData(userDocsData.currEndpoint, true, userDocsData.currDocketObjects);
         try {
             const docketObjectsFromDb = await getDocketObjects();
-            setDocketObjects(docketObjectsFromDb);
-            console.log(docketObjectsFromDb);
-            console.log(userDocsData);
+            handleUpdateUserDocsData(userDocsData.currEndpoint, true, docketObjectsFromDb);
+            handleUpdateSandboxMode(1);
+            if(docketObjectsFromDb.length > 0) {
+                handleUpdateNewDocketObject(docketObjectsFromDb[0]);
+            }
 
         } catch (error : any) {
             throw new Error('Error getting the data ' + error.message);

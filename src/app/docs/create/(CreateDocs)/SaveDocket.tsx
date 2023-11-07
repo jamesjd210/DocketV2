@@ -3,7 +3,7 @@ import { useDocketObject } from '@/docs/DocketDataProvider';
 import { DocketObject } from '@/models/DocketObject.model';
 
 export default function SaveDocket() {
-    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const { docketObject, } = useDocketObject();
     const [saveDocketResponse, setSaveDocketResponse] = useState<string | null>(null);
     const [apiKey, setApiKey] = useState<string>("");
     const docketObjectToSend : DocketObject= {

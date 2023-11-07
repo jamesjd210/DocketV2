@@ -9,7 +9,7 @@ import { useDocketObject } from '../DocketDataProvider';
 
 export default function Page() {
 
-    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const { docketObject , handleUpdateDocketObject, handleUpdateSandboxMode } = useDocketObject();
 
     //Tracking the state of the form data from user
     const [formData, setFormData] = useState<ApiForm>({
@@ -49,6 +49,7 @@ export default function Page() {
         //Prevent browser from reloading page
         event.preventDefault();
 
+
         setIsSubmitted(true);
         setApiRequest({
             url : getUrl(),
@@ -56,6 +57,7 @@ export default function Page() {
             headers : getHeaders(),
             data : getData(),
         });
+        handleUpdateSandboxMode(0);
         docketObject.companyName = formData.companyName;
     }
 

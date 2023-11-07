@@ -3,7 +3,7 @@ import DownloadDoc from '@/docs/create/(CreateDocs)/DownloadDoc';
 import SaveDocket from '@/docs/create/(CreateDocs)/SaveDocket';
 
 export default function DocGenerator() {
-    const { docketObject , handleUpdateDocketObject } = useDocketObject();
+    const { docketObject, sandboxMode, } = useDocketObject();
     const currentApiForm = docketObject.currApiForm;
     const currentApiRequest = docketObject.currApiRequest;
     function generateGeneralInfo() : string {
@@ -67,8 +67,7 @@ ${JSON.stringify(docketObject.response, null, 4)}
     return (
         <div className = "px-5">
             <DownloadDoc documentContent={allCode}/>
-            
-            <SaveDocket/>
+            {!sandboxMode ? <SaveDocket/> : <></>}     
         </div>
     );
 };
